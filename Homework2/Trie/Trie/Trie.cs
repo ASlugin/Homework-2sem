@@ -134,11 +134,34 @@ namespace Trie
             return false;
         }
 
+        /// <summary>
+        /// Counts how many words starts with a given prefix
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns>Amount word which starts with given prefix</returns>
         public int HowManyStartsWithPrefix(string prefix)
         {
-            return 0;
+            var currentElement = root;
+            for (var i = 0; i < prefix.Length; ++i)
+            {
+                if (!currentElement.NextElements.ContainsKey(prefix[i]))
+                {
+                    return 0;
+                }
+                currentElement = currentElement.NextElements[prefix[i]];
+            }
+            return terminalElementCounter(currentElement);
         }
 
+        private int terminalElementCounter(Element currentElement)
+        {
+            int result = currentElement.Terminal ? 1 : 0;
+            foreach (var i in currentElement.NextElements)
+            {
+                result += terminalElementCounter(currentElement.NextElements[i.Key]);
+            }
+            return result;
+        }
 
     }
 }

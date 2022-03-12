@@ -21,7 +21,7 @@ namespace Trie
             Console.Write(trie.Add("hers"));
             Console.WriteLine(" " + trie.Size);
 
-
+            /*
             Console.Write(trie.Remove("she"));
             Console.WriteLine(" " + trie.Size);
             Console.Write(trie.Remove("his"));
@@ -32,6 +32,12 @@ namespace Trie
             Console.WriteLine(" " + trie.Size);
             Console.Write(trie.Remove("his"));
             Console.WriteLine(" " + trie.Size);
+            */
+
+            Console.WriteLine(trie.HowManyStartsWithPrefix(""));
+
+
+
         }
     }
 }
