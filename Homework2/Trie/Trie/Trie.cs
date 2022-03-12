@@ -41,7 +41,7 @@ namespace Trie
                 {
                     if (i == element.Length - 1)
                     {
-                        if (currentElement.NextElements[element[i]].Terminal == false)
+                        if (!currentElement.NextElements[element[i]].Terminal)
                         {
                             Size++;
                             currentElement.NextElements[element[i]].Terminal = true;
@@ -79,7 +79,7 @@ namespace Trie
                 if (currentElement.NextElements.ContainsKey(element[i]))
                 {
                     currentElement = currentElement.NextElements[element[i]];
-                    if (i == element.Length - 1 && currentElement.Terminal == true)
+                    if (i == element.Length - 1 && currentElement.Terminal)
                     {
                         return true;
                     }
@@ -107,7 +107,7 @@ namespace Trie
         {
             if (element.Length == 0)
             {
-                if (currentElement.Terminal == true)
+                if (currentElement.Terminal)
                 {
                     Size--;
                     currentElement.Terminal = false;
@@ -126,7 +126,7 @@ namespace Trie
                 if (removeThisElement)
                 {
                     currentElement.NextElements.Remove(element[0]);
-                    removeThisElement = currentElement.NextElements.Count == 0 && currentElement.Terminal == false ? true : false;
+                    removeThisElement = currentElement.NextElements.Count == 0 && !currentElement.Terminal ? true : false;
                 }
                 return true;
             }
