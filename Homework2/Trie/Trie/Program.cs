@@ -8,28 +8,30 @@ namespace Trie
         {
 
             Trie trie = new Trie();
-            Console.WriteLine(trie.Size);
 
-            var result = trie.Add("ab");
-            Console.WriteLine(result);
-            Console.WriteLine(trie.Size);
+            Console.Write(trie.Add("he"));
+            Console.WriteLine(" " + trie.Size);
 
-            result = trie.Add("a");
-            Console.WriteLine(result);
-            Console.WriteLine(trie.Size);
+            Console.Write(trie.Add("his"));
+            Console.WriteLine(" " + trie.Size);
 
-            result = trie.Add("cde");
-            Console.WriteLine(result);
-            Console.WriteLine(trie.Size);
+            Console.Write(trie.Add("she"));
+            Console.WriteLine(" " + trie.Size);
 
-            result = trie.Add("cd");
-            Console.WriteLine(result);
-            Console.WriteLine(trie.Size);
+            Console.Write(trie.Add("hers"));
+            Console.WriteLine(" " + trie.Size);
 
-            var search = trie.Contains("de");
-            Console.WriteLine(search);
 
-            Console.WriteLine(trie.Size);
+            Console.Write(trie.Remove("she"));
+            Console.WriteLine(" " + trie.Size);
+            Console.Write(trie.Remove("his"));
+            Console.WriteLine(" " + trie.Size);
+            Console.Write(trie.Remove("hers"));
+            Console.WriteLine(" " + trie.Size);
+            Console.Write(trie.Remove("he"));
+            Console.WriteLine(" " + trie.Size);
+            Console.Write(trie.Remove("his"));
+            Console.WriteLine(" " + trie.Size);
         }
     }
 }

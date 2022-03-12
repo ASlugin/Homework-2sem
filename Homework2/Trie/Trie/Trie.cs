@@ -10,6 +10,7 @@ namespace Trie
             this.root = new Element();
         }
 
+        private Element root;
         private class Element
         {
             public Element()
@@ -21,9 +22,10 @@ namespace Trie
             public bool Terminal;
         }
 
+        /// <summary>
+        /// Amount of word in trie
+        /// </summary>
         public int Size { get; private set; } = 0;
-
-        private Element root;
 
         /// <summary>
         /// Adds a string to trie
@@ -90,11 +92,49 @@ namespace Trie
             return false;
         }
 
+        /// <summary>
+        /// Removes given string from trie
+        /// </summary>
+        /// <param name="element">String to remove from trie</param>
+        /// <returns>True if such string was in trie, else returns false</returns>
         public bool Remove(string element)
         {
-            return true;
+            bool removeThisElement = false;
+            return RemoveRecursive(root, element, ref removeThisElement);
         }
-        public int HowManyStartsWithPrefix(String prefix)
+
+        private bool RemoveRecursive(Element currentElement, string element, ref bool removeThisElement)
+        {
+            if (element.Length == 0)
+            {
+                if (currentElement.Terminal == true)
+                {
+                    Size--;
+                    currentElement.Terminal = false;
+                    removeThisElement = currentElement.NextElements.Count == 0 ? true : false;
+                    return true;
+                }
+                return false;
+            }
+
+            if (currentElement.NextElements.ContainsKey(element[0]))
+            {
+                if (!RemoveRecursive(currentElement.NextElements[element[0]],element.Substring(1), ref removeThisElement))
+                {
+                    return false;
+                }
+                if (removeThisElement)
+                {
+                    currentElement.NextElements.Remove(element[0]);
+                    removeThisElement = currentElement.NextElements.Count == 0 && currentElement.Terminal == false ? true : false;
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        public int HowManyStartsWithPrefix(string prefix)
         {
             return 0;
         }
