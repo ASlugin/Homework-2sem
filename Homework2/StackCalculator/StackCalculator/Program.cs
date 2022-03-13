@@ -22,23 +22,10 @@ namespace StackCalculator
                 Console.WriteLine("Incorrect type of stack!");
                 return;
             }
-            IStack stack;
-            if (typeOfStack == 0)
-            {
-                stack = new StackOnArray();
-            }
-            else
-            {
-                stack = new StackOnList();
-            }
-    
+            IStack stack = typeOfStack == 0 ? new StackOnArray() : new StackOnList();
+
             var result = Calculator.Calculate(expression, stack);
-            if (result == null)
-            {
-                Console.WriteLine("Something went wrong");
-                return;
-            }
-            Console.WriteLine($"Result: {result}");
+            Console.WriteLine(result == null ? "Something went wrong" : $"Result: {result}");
         }
     }
 }

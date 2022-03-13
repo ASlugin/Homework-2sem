@@ -8,6 +8,13 @@ namespace StackCalculator
         {
             return element.Length == 1 && (element[0] == '+' || element[0] == '-' || element[0] == '*' || element[0] == '/');
         }
+
+        /// <summary>
+        /// Calculates expression in Reverse Polish notation
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="stack"></param>
+        /// <returns>Calculation result or null, if error has occurred</returns>
         public static double? Calculate(string expression, IStack stack)
         {
             
@@ -51,7 +58,6 @@ namespace StackCalculator
                 {
                     return null;
                 }
-                
             }
 
             var result = stack.Pop();
