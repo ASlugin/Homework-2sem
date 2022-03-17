@@ -46,7 +46,7 @@ namespace StackCalculator
                             stack.Push((double)firstNumber * (double)secondNumber);
                             break;
                         case "/":
-                            if (secondNumber < double.Epsilon)
+                            if (Math.Abs((double)secondNumber) < double.Epsilon)
                             {
                                 return null;
                             }
