@@ -3,8 +3,11 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build-Windows:
-    runs-on: windows-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
