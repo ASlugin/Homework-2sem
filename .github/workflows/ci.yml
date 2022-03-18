@@ -15,7 +15,4 @@ jobs:
           dotnet-version: '6.x'
       - name: Build
         shell: pwsh
-        run: For /R %%i in (*.sln) do dotnet build %%i
-      - name: Run tests
-        shell: pwsh
-        run: For /R %%i in (*.sln) do dotnet test %%i
+        run: foreach ($i in Get_ChildItem *sln -Recurse){dotnet build $i}
