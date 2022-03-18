@@ -13,3 +13,6 @@ jobs:
       - name: Build
         shell: cmd
         run: For /R %%i in (*.sln) do dotnet build %%i
+      - name: Run tests
+        shell: cmd
+        run: For /R %%i in (*.sln) do dotnet test %%i
