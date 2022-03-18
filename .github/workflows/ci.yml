@@ -11,13 +11,4 @@ jobs:
         with:
           dotnet-version: '6.x'
       name: Build
-      run: 
-        for /d %%i in (*) do (
-          cd %%i
-          for /d %%j in (*) do (
-            cd %%j
-            if exist *.sln (
-              dotnet build
-            )
-          )
-        )
+      run: for /d %%i in (*) do (cd %%i)
