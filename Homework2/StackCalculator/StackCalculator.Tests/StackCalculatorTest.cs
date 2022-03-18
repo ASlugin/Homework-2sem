@@ -57,7 +57,7 @@ namespace StackCalculator.Tests
         [TestCaseSource(nameof(StackCases))]
         public void CalculateShallReturnNullIfExpressionIsIncorreclty(IStack stack)
         {
-            Assert.IsNull(Calculator.Calculate("ab qwerty /", stack));
+            Assert.IsNull(Calculator.Calculate("ab qwert /", stack));
             Assert.IsNull(Calculator.Calculate("IV XII * ", stack));
         }
 
