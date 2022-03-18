@@ -11,4 +11,5 @@ jobs:
         with:
           dotnet-version: '6.x'
       - name: Build
+        shell: cmd
         run: For /R %%i in (*.sln) do dotnet build %%i
