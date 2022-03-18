@@ -15,6 +15,4 @@ jobs:
           dotnet-version: '6.x'
       - name: Build
         shell: pwsh
-        run: 
-          $solutions = Get_ChildItem  *sln -Recurse
-          foreach ($file in $solutions){dotnet build $file}
+        run: Get_ChildItem *.sln -Recurse | ForEach-Object {dotnet build $_}
