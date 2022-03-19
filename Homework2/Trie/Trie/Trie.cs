@@ -93,7 +93,7 @@ namespace Trie
         }
 
         /// <summary>
-        /// Removes given string from trie
+        /// Removes given string from trie 
         /// </summary>
         /// <param name="element">String to remove from trie</param>
         /// <returns>True if such string was in trie, else returns false</returns>
