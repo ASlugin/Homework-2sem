@@ -15,4 +15,4 @@ jobs:
           dotnet-version: '6.x'
       - name: Build
         shell: powershell
-        run: Get_ChildItem -Path .\* -Include *.sln -Recurse | ForEach-Object {dotnet build $_}
+        run: Get_ChildItem -Path . -Include *.sln -Recurse | ForEach-Object {dotnet build $_}
