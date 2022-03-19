@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
@@ -15,4 +15,7 @@ jobs:
           dotnet-version: '6.x'
       - name: Build
         shell: powershell
-        run: Get-ChildItem -Path . -Include *.sln -Recurse | ForEach-Object {dotnet build $_}
+        run: Get-ChildItem -Include *.sln -Recurse | ForEach-Object {dotnet build $_}
+      - name: Run tests
+        shell: powershell
+        run: Get-ChildItem -Include *.sln -Recurse | ForEach-Object {dotnet test $_}
