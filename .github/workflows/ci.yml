@@ -14,8 +14,8 @@ jobs:
         with:
           dotnet-version: '6.x'
       - name: Build
-        shell: powershell
+        shell: pwsh
         run: Get-ChildItem -Path . -Include *.sln -Recurse | ForEach-Object {dotnet build $_}
       - name: Run tests
-        shell: powershell
+        shell: pwsh
         run: Get-ChildItem -Path . -Include *.sln -Recurse | ForEach-Object {dotnet test $_}
