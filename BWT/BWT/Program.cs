@@ -5,7 +5,7 @@ namespace BWT
     class Program
     {
         /// <summary>
-        /// Performs a direct Burrows-Wheeler transformation
+        /// Performs a direct Burrows-Wheeler transformation 
         /// </summary>
         /// <param name="input">The source string to be converted</param>
         /// <param name="positionOfEnd">Takes control and puts in it position of the end of input string in resulting string</param>
