@@ -49,7 +49,7 @@ namespace Sorting
             foreach (var i in array)
             {
                 Console.Write($"{i} ");
-            }
+            } 
         }
     }
 }
