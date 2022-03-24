@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using System.Collections;
 using Stack;
 using StackCalculator;
+using System.Collections.Generic;
 
 namespace StackCalculator.Tests
 {
@@ -12,14 +12,13 @@ namespace StackCalculator.Tests
         {
         }
 
-        private static IEnumerable StackCases
-        {
-            get
+        private static IEnumerable<TestCaseData> StackCases
+            => new TestCaseData[]
             {
-                yield return new StackOnArray();
-                yield return new StackOnList();
-            }
-        }
+                new TestCaseData(new StackOnArray()),
+                new TestCaseData(new StackOnList()),
+            };
+        
 
         [TestCaseSource(nameof(StackCases))]
         public void CalculateShallWorkCorrectlyWithPositiveNumbers(IStack stack)

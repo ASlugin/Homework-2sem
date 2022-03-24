@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using Stack;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace StackCalculator.Tests
 {
@@ -11,14 +11,13 @@ namespace StackCalculator.Tests
         {
         }
 
-        private static IEnumerable StackCases
-        {
-            get
+        private static IEnumerable<TestCaseData> StackCases
+            => new TestCaseData[]
             {
-                yield return new StackOnArray();
-                yield return new StackOnList();
-            }
-        }
+                new TestCaseData(new StackOnArray()),
+                new TestCaseData(new StackOnList()),
+            };
+        
 
         [TestCaseSource(nameof(StackCases))]
         public void PushShallWork(IStack stack)
