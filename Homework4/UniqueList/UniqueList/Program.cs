@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UniqueList
+﻿namespace UniqueList
 {
     class Program
     {
@@ -23,6 +21,21 @@ namespace UniqueList
             list.Delete(1);
             list.Delete(0);
             list.Delete(list.Size - 1);
+
+
+            UniqueList uniqueList = new UniqueList();
+            uniqueList.Add(11, uniqueList.Size);
+            uniqueList.Add(22, uniqueList.Size);
+            uniqueList.Add(33, uniqueList.Size);
+
+            uniqueList.ChangeValueOfElement(12, 0);
+            uniqueList.ChangeValueOfElement(23, 1);
+            uniqueList.ChangeValueOfElement(34, uniqueList.Size - 1);
+
+            for (int i = 0; i < list.Size; i++)
+            {
+                Console.WriteLine(uniqueList.GetValue(i));
+            }
         }
     }
 }

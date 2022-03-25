@@ -6,7 +6,7 @@
         {
         }
 
-        private class ListElement
+        protected class ListElement
         {
             public ListElement(int newValue, ListElement? next)
             {
@@ -17,7 +17,7 @@
             public ListElement? next;
         }
 
-        private ListElement? head;
+        protected ListElement? head;
 
         /// <summary>
         /// Amount of elements in the list
@@ -55,7 +55,7 @@
         /// <param name="value">Value of new element</param>
         /// <param name="position">Position for new element</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public void Add(int value, int position)
+        public virtual void Add(int value, int position)
         {
             if (position < 0 || position > Size)
             {
@@ -100,9 +100,9 @@
         /// Changes value of the element at the given position
         /// </summary>
         /// <param name="newValue">New value for the element</param>
-        /// <param name="position">Зosition for the element to be changed</param>
+        /// <param name="position">Position for the element to be changed</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public void ChangeValueOfElement(int newValue, int position)
+        public virtual void ChangeValueOfElement(int newValue, int position)
         {
             if (position < 0 || position >= Size)
             {
