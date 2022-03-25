@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ParseTree
+﻿namespace ParseTree
 {
     class Tree 
     {
@@ -8,14 +6,18 @@ namespace ParseTree
         public Tree(string expression)
         {
             var elements = expression.Split(new char[] {' ', '(', ')'}, StringSplitOptions.RemoveEmptyEntries);
-            this.root = AddNodeRecursive(elements);
+            this.root = AddNodeRecursive(ref elements);
+            if (elements.Length > 1)
+            {
+                throw new ArgumentException("Incorrect expression: too many arguments");
+            }
         }
 
-        private INode AddNodeRecursive(string[] elements)
+        private INode AddNodeRecursive(ref string[] elements)
         {
             if (elements.Length == 0)
             {
-                throw new ArgumentException("Invalid expression!");
+                throw new ArgumentException("Incorrect expression: not enough arguments");
             }
 
             int value = 0;
@@ -24,34 +26,24 @@ namespace ParseTree
                 return new Operand(value);
             }
 
-            Operation newNode;
-            switch (elements[0])
+            Operation newNode = elements[0] switch
             {
-                case "+":
-                    newNode = new Addition();
-                    break;
-                case "-":
-                    newNode = new Subtraction();
-                    break;
-                case "*":
-                    newNode = new Multiplication();
-                    break;
-                case "/":
-                    newNode = new Division();
-                    break;
-                default:
-                    throw new ArgumentException("Invalid expression!");
-            }
+                "+" => newNode = new Addition(),
+                "-" => newNode = new Subtraction(),
+                "*" => newNode = new Multiplication(),
+                "/" => newNode = new Division(),
+                _ => throw new ArgumentException("Incorrect expression: invalid character")
+            };
 
-            string[] elementsWithoutFirstElement = elements.Skip(1).ToArray();
-            newNode.LeftSon = AddNodeRecursive(elementsWithoutFirstElement);
-            elementsWithoutFirstElement = elements.Skip(2).ToArray();
-            newNode.RightSon = AddNodeRecursive(elementsWithoutFirstElement);
+            elements = elements.Skip(1).ToArray();
+            newNode.LeftSon = AddNodeRecursive(ref elements);
+            elements = elements.Skip(1).ToArray();
+            newNode.RightSon = AddNodeRecursive(ref elements);
             return newNode;
         }
 
         /// <summary>
-        /// 
+        /// Prints expression that contained in tree
         /// </summary>
         public void Print()
         {
@@ -60,9 +52,9 @@ namespace ParseTree
         }
 
         /// <summary>
-        /// 
+        /// Calculates expression that contained in tree
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Result of calculating the expression</returns>
         public double Calculate()
         {
             return root.Calculate();

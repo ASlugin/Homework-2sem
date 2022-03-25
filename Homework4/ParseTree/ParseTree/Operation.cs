@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ParseTree
+﻿namespace ParseTree
 {
     abstract class Operation : INode
     {
