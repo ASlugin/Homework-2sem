@@ -1,6 +1,6 @@
 ﻿namespace ParseTree
 {
-    class Tree 
+    public class Tree 
     {
         private INode root;
         public Tree(string expression)

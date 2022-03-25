@@ -1,6 +1,6 @@
 ﻿namespace ParseTree
 {
-    interface INode
+    public interface INode
     {
         /// <summary>
         /// Prints an expression that is contained in a subtree of the node
