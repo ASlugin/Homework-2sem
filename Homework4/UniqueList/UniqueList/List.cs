@@ -82,7 +82,7 @@
         {
             if (position < 0 || position >= Size)
             {
-                throw new ArgumentOutOfRangeException("Попытка удаления несуществуюшего элемента");     // Реализовать класс исключений
+                throw new AttemptToDeleteNonexistentElement("Element with given position doesn't exist");
             }
 
             if (position == 0)
@@ -106,7 +106,7 @@
         {
             if (position < 0 || position >= Size)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("Invalid position");
             }
             FindElementByPosition(position).value = newValue;
         }
@@ -120,9 +120,23 @@
         {
             if (position < 0 || position >= Size)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("Invalid position");
             }
             return FindElementByPosition(position).value;
+        }
+
+        /// <summary>
+        /// Prints all elements of list
+        /// </summary>
+        public void Print()
+        {
+            ListElement? current = head;
+            for (int i = 0; i < Size; i++)
+            {
+                Console.Write($"{current?.value} ");
+                current = current?.next;
+            }
+            Console.WriteLine();
         }
     }
 }

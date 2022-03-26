@@ -26,7 +26,7 @@
         {
             if (Exist(value))
             {
-                throw new Exception();                                 // Реализовать класс исключений
+                throw new AttemptToAddExistingValueException("The given value already exist in the list");
             }
             base.Add(value, position);
         }
@@ -41,9 +41,28 @@
         {
             if (Exist(newValue))
             {
-                throw new Exception();                                 // Реализовать класс исключений
+                throw new AttemptToAddExistingValueException("The given value already exist in the list");
             }
             base.ChangeValueOfElement(newValue, position);
+        }
+
+        /// <summary>
+        /// Returns position of element with given value
+        /// </summary>
+        /// <param name="value">Value to search for element with this value</param>
+        /// <returns>Position of element or -1 if given value doesn't exist in list</returns>
+        public int GetPositionOfElementByValue(int value)
+        {
+            ListElement? current = head;
+            for (int i = 0; i < Size; i++)
+            {
+                if (current?.value == value)
+                {
+                    return i;
+                }
+                current = current?.next;
+            }
+            return -1;
         }
     }
 }
