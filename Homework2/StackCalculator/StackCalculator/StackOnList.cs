@@ -1,35 +1,34 @@
-﻿using System.Collections.Generic;
+﻿namespace Stack;
 
-namespace Stack
+using System.Collections.Generic;
+
+public class StackOnList : IStack
 {
-    public class StackOnList : IStack
+    public StackOnList()
     {
-        public StackOnList()
-        {
-            this.stack = new List<double>();
-        }
+        this.stack = new List<double>();
+    }
 
-        private List<double> stack;
+    private List<double> stack;
 
-        public bool IsEmpty()
-        {
-            return stack.Count == 0;
-        }
+    public bool IsEmpty()
+    {
+        return stack.Count == 0;
+    }
 
-        public void Push(double value)
-        {
-            stack.Add(value);
-        }
+    public void Push(double value)
+    {
+        stack.Add(value);
+    }
 
-        public double? Pop()
+    public double? Pop()
+    {
+        if (IsEmpty())
         {
-            if (IsEmpty())
-            {
-                return null;
-            }
-            var result = stack[stack.Count - 1];
-            stack.RemoveAt(stack.Count - 1);
-            return result;
+            return null;
         }
+        var result = stack[stack.Count - 1];
+        stack.RemoveAt(stack.Count - 1);
+        return result;
     }
 }
