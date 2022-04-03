@@ -1,20 +1,19 @@
-﻿namespace ParseTree
-{
-    class Division : Operation
-    {
-        public override double Calculate()
-        {
-            if (RightSon.Calculate() == 0)
-            {
-                throw new DivideByZeroException();
-            }
-            return (double)LeftSon.Calculate() / (double)RightSon.Calculate();
-        }
+﻿namespace ParseTree;
 
-        public override void Print()
+class Division : Operation
+{
+    public override double Calculate()
+    {
+        if (RightSon.Calculate() == 0)
         {
-            Console.Write("( / ");
-            base.Print();
+            throw new DivideByZeroException();
         }
+        return (double)LeftSon.Calculate() / (double)RightSon.Calculate();
+    }
+
+    public override void Print()
+    {
+        Console.Write("( / ");
+        base.Print();
     }
 }

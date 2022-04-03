@@ -1,16 +1,15 @@
-﻿namespace ParseTree
-{
-    class Subtraction : Operation
-    {
-        public override double Calculate()
-        {
-            return LeftSon.Calculate() - RightSon.Calculate();
-        }
+﻿namespace ParseTree;
 
-        public override void Print()
-        {
-            Console.Write("( - ");
-            base.Print();
-        }
+class Subtraction : Operation
+{
+    public override double Calculate()
+    {
+        return LeftSon.Calculate() - RightSon.Calculate();
+    }
+
+    public override void Print()
+    {
+        Console.Write("( - ");
+        base.Print();
     }
 }

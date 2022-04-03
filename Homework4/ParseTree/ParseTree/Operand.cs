@@ -1,19 +1,18 @@
-﻿namespace ParseTree
+﻿namespace ParseTree;
+
+class Operand : INode
 {
-    class Operand : INode
+    private double value;
+    public Operand(double newValue)
     {
-        private double value;
-        public Operand(double newValue)
-        {
-            this.value = newValue;
-        }
-        public void Print()
-        {
-            Console.Write($"{value} ");
-        }
-        public double Calculate()
-        {
-            return value;
-        }
+        this.value = newValue;
+    }
+    public void Print()
+    {
+        Console.Write($"{value} ");
+    }
+    public double Calculate()
+    {
+        return value;
     }
 }
