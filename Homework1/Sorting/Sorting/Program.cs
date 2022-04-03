@@ -1,55 +1,58 @@
-﻿using System;
+﻿namespace Sorting;
 
-namespace Sorting
+using System;
+
+/// <summary>
+/// Class containing BubbleSort and Main
+/// </summary>
+class Program
 {
-    class Program
+    /// <summary>
+    /// Sorts an array using Bubble sort
+    /// </summary>
+    /// <param name="array">Array for sorting</param>
+    public static void BubbleSort(int[] array)
     {
-        public static void BubleSort (int[] array)
+        for (var i = 0; i < array.Length - 1; ++i)
         {
-            for (var i = 0; i < array.Length - 1; ++i)
+            for (var j = 0; j < array.Length - 1 - i; ++j)
             {
-                for (var j = 0; j < array.Length - 1 - i; ++j)
+                if (array[j] > array[j + 1])
                 {
-                    if (array[j] > array[j + 1])
-                    {
-                        int temp = array[j];
-                        array[j] = array[j + 1];
-                        array[j + 1] = temp;
-                    }
+                    int temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
                 }
             }
         }
-         public static void Main(string[] args)
+    }
+
+    public static void Main(string[] args)
+    {
+        Console.Write("Enter the array elements: ");
+        string? inputString = Console.ReadLine();
+        if (inputString == null)
         {
-            Console.Write("Enter the array elements: ");
-            string? inputString = Console.ReadLine();
-            if (inputString == null)
+            return;
+        }
+
+        var nums = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var array = new int[nums.Length];
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if (!Int32.TryParse(nums[i], out array[i]))
             {
+                Console.WriteLine("Incorrect format of array elements");
                 return;
             }
-
-            string[] nums = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            int[] array = new int[nums.Length];
-            for (var i = 0; i < nums.Length; i++)
-            {
-                try
-                {
-                    array[i] = int.Parse(nums[i]);
-                }
-                catch
-                {
-                    Console.WriteLine("Incorrect format of array elements");
-                    return;
-                }
-            }
-
-            BubleSort(array);
-
-            Console.Write("Array after sorting: ");
-            foreach (var i in array)
-            {
-                Console.Write($"{i} ");
-            } 
         }
+
+        BubbleSort(array);
+
+        Console.Write("Array after sorting: ");
+        foreach (var i in array)
+        {
+            Console.Write($"{i} ");
+        } 
     }
 }
