@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace Routers
+﻿namespace Routers;
+class Program
 {
-    class Program
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
-        }
+
+        var a = new Graph("../../../Input.txt");
+        Console.WriteLine(a.IsGraphConnectivity() ? "Graph is connectivity" : "Graph is not connectivity");
+
     }
 }
