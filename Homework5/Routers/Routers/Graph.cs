@@ -6,11 +6,14 @@ class Graph
 
     private List<int> nodes;
 
+    private Dictionary<(int, int), int> edges;
+
     private int sizeOfMatrix = 5;
 
     public Graph(string pathInputFile)
     {
         nodes = new();
+        edges = new();
         Matrix = new int[sizeOfMatrix, sizeOfMatrix];
         Initialization(pathInputFile);
     }
@@ -18,51 +21,54 @@ class Graph
     private void Initialization(string pathInputFile)
     {
 
-        using (StreamReader inputFile = new StreamReader(pathInputFile))
+        using StreamReader inputFile = new(pathInputFile);
+        while (!inputFile.EndOfStream)
         {
-            while (!inputFile.EndOfStream)
+            string? line = inputFile.ReadLine();
+            if (line == null)
             {
-                string? line = inputFile.ReadLine();
-                if (line == null)
+                break;
+            }
+
+            string[] stringSplitByColon = line.Split(':');
+            if (stringSplitByColon.Length < 2 || !int.TryParse(stringSplitByColon[0], out int startNode))
+            {
+                throw new Exception("Incorrect input data");     //////////
+            }
+
+            if (!nodes.Contains(startNode))
+            {
+                nodes.Add(startNode);
+            }
+
+            string[] stringOfNodesSplitByComma = stringSplitByColon[1].Split(',');
+
+            foreach (var node in stringOfNodesSplitByComma)
+            {
+                if (!int.TryParse(node.Split('(')[0].Replace(" ", ""), out int endNode)
+                    || !int.TryParse(node.Split('(')[1].Replace(" ", "").Replace(")", ""), out int weight))
                 {
-                    break;
+                    throw new Exception("Incorrect input data");      //////////
                 }
 
-                string[] stringSplitByColon = line.Split(':');
-                int startNode;
-                if (stringSplitByColon.Length < 2 || !int.TryParse(stringSplitByColon[0], out startNode))
+                while (endNode >= sizeOfMatrix || startNode >= sizeOfMatrix)
                 {
-                    throw new Exception("Incorrect input data");     //////////
+                    Resize();
                 }
 
-                if (!nodes.Contains(startNode))
+                Matrix[startNode, endNode] = weight;
+                Matrix[endNode, startNode] = weight;
+                if (!nodes.Contains(endNode))
                 {
-                    nodes.Add(startNode);
+                    nodes.Add(endNode);
                 }
 
-                string[] stringOfNodesSplitByComma = stringSplitByColon[1].Split(',');
-
-                foreach (var node in stringOfNodesSplitByComma)
+                if (edges.ContainsKey((startNode, endNode)) || edges.ContainsKey((endNode, startNode)))
                 {
-                    int finishNode = 0;
-                    int weight = 0;
-                    if (!int.TryParse(node.Split('(')[0].Replace(" ", ""), out finishNode) || !int.TryParse(node.Split('(')[1].Replace(" ", "").Replace(")", ""), out weight))
-                    {
-                        throw new Exception("Incorrect input data");      //////////
-                    }
-
-                    while (finishNode >= sizeOfMatrix || startNode >= sizeOfMatrix)
-                    {
-                        Resize();
-                    }
-
-                    Matrix[startNode, finishNode] = weight;
-                    Matrix[finishNode, startNode] = weight;
-                    if (!nodes.Contains(finishNode))
-                    {
-                        nodes.Add(finishNode);
-                    }
+                    throw new Exception("Incorrect input data1"); ///////////////////
                 }
+                edges.Add((startNode, endNode), weight);
+
             }
         }
     }
@@ -111,5 +117,68 @@ class Graph
         return visitedNodes;
     }
 
+    public void RemoveUnnecessaryEdges()
+    {
+        foreach (KeyValuePair<(int, int), int> edge in edges.OrderBy(key => key.Value))
+        {
+            var startNode = edge.Key.Item1;
+            var endNode = edge.Key.Item2;
+
+            Matrix[startNode, endNode] = 0;
+            Matrix[endNode, startNode] = 0;
+
+            if (IsGraphConnectivity())
+            {
+                edges.Remove(edge.Key);
+            }
+            else
+            {
+                Matrix[startNode, endNode] = edge.Value;
+                Matrix[endNode, startNode] = edge.Value;
+            }
+        }
+    }
+
+    public void PrintGraph()
+    {
+        var visitedEdge = new Dictionary<(int, int), bool>();
+        foreach (var edge in edges)
+        {
+            visitedEdge.Add((edge.Key.Item1, edge.Key.Item2), false);
+            visitedEdge.Add((edge.Key.Item2, edge.Key.Item1), false);
+        }
+
+        for (int i = nodes.Min(); i <= nodes.Max(); ++i)
+        {
+            bool needToPrintStartNode = true;
+            bool needToPrintCommaBeforeNode = false;
+            for (int j = nodes.Min(); j <= nodes.Max(); ++j)
+            {
+                if (Matrix[i, j] > 0 && visitedEdge.ContainsKey((i, j)) && !visitedEdge[(i, j)])
+                {
+                    if (needToPrintStartNode)
+                    {
+                        Console.Write(i + ": ");
+                        needToPrintStartNode = false;
+                    }
+                    if (needToPrintCommaBeforeNode)
+                    {
+                        Console.Write(", " + j + " (" + Matrix[i, j] + ")");
+                    }
+                    else
+                    {
+                        Console.Write(j + " (" + Matrix[i, j] + ")");
+                        needToPrintCommaBeforeNode = true;
+                    }
+                    visitedEdge[(i, j)] = true;
+                    visitedEdge[(j, i)] = true;
+                }
+            }
+            if (!needToPrintStartNode)
+            {
+                Console.WriteLine();
+            }
+        }
+    }
 
 }
