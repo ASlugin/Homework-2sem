@@ -2,19 +2,16 @@
 
 class Graph
 {
-    public int[,] Matrix { get; private set; }
-
-    private List<int> nodes;
-
-    private Dictionary<(int, int), int> edges;
-
+    private int[,] matrix;
     private int sizeOfMatrix = 5;
+    private List<int> nodes;
+    private Dictionary<(int, int), int> edges;
 
     public Graph(string pathInputFile)
     {
         nodes = new();
         edges = new();
-        Matrix = new int[sizeOfMatrix, sizeOfMatrix];
+        matrix = new int[sizeOfMatrix, sizeOfMatrix];
         Initialization(pathInputFile);
     }
 
@@ -56,8 +53,8 @@ class Graph
                     Resize();
                 }
 
-                Matrix[startNode, endNode] = weight;
-                Matrix[endNode, startNode] = weight;
+                matrix[startNode, endNode] = weight;
+                matrix[endNode, startNode] = weight;
                 if (!nodes.Contains(endNode))
                 {
                     nodes.Add(endNode);
@@ -80,12 +77,16 @@ class Graph
         {
             for (int j = 0; j < sizeOfMatrix / 2; j++)
             {
-                newMatrix[i, j] = Matrix[i, j];
+                newMatrix[i, j] = matrix[i, j];
             }
         }
-        Matrix = newMatrix;
+        matrix = newMatrix;
     }
 
+    /// <summary>
+    /// Check whether graph is connectivity
+    /// </summary>
+    /// <returns>Returns true if graph is connectivity, else returns false</returns>
     public bool IsGraphConnectivity()
     {
         var visited = new Dictionary<int, bool>();
@@ -103,7 +104,7 @@ class Graph
         visited[startNode] = true;
         for (int j = nodes.Min(); j <= nodes.Max(); ++j)
         {
-            if (Matrix[startNode, j] > 0)
+            if (matrix[startNode, j] > 0)
             {
                 if (!visited[j])
                 {
@@ -114,6 +115,9 @@ class Graph
         return visitedNodes;
     }
 
+    /// <summary>
+    /// Delete all edges so that graph remains connectivity
+    /// </summary>
     public void RemoveUnnecessaryEdges()
     {
         foreach (KeyValuePair<(int, int), int> edge in edges.OrderBy(key => key.Value))
@@ -121,8 +125,8 @@ class Graph
             var startNode = edge.Key.Item1;
             var endNode = edge.Key.Item2;
 
-            Matrix[startNode, endNode] = 0;
-            Matrix[endNode, startNode] = 0;
+            matrix[startNode, endNode] = 0;
+            matrix[endNode, startNode] = 0;
 
             if (IsGraphConnectivity())
             {
@@ -130,12 +134,16 @@ class Graph
             }
             else
             {
-                Matrix[startNode, endNode] = edge.Value;
-                Matrix[endNode, startNode] = edge.Value;
+                matrix[startNode, endNode] = edge.Value;
+                matrix[endNode, startNode] = edge.Value;
             }
         }
     }
 
+    /// <summary>
+    /// Creates file on specified path and writes graph there
+    /// </summary>
+    /// <param name="pathToOutputFile">Path to output file</param>
     public void PrintGraphToFile(string pathToOutputFile)
     {
         FileStream outputFile = File.Create(pathToOutputFile);
@@ -154,7 +162,7 @@ class Graph
             bool needToPrintCommaBeforeNode = false;
             for (int j = nodes.Min(); j <= nodes.Max(); ++j)
             {
-                if (Matrix[i, j] > 0 && visitedEdge.ContainsKey((i, j)) && !visitedEdge[(i, j)])
+                if (matrix[i, j] > 0 && visitedEdge.ContainsKey((i, j)) && !visitedEdge[(i, j)])
                 {
                     if (needToPrintStartNode)
                     {
@@ -163,11 +171,11 @@ class Graph
                     }
                     if (needToPrintCommaBeforeNode)
                     {
-                        output.Write($", {j} ({Matrix[i, j]})");
+                        output.Write($", {j} ({matrix[i, j]})");
                     }
                     else
                     {
-                        output.Write($"{j} ({Matrix[i, j]})");
+                        output.Write($"{j} ({matrix[i, j]})");
                         needToPrintCommaBeforeNode = true;
                     }
                     visitedEdge[(i, j)] = true;
