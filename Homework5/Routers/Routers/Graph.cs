@@ -33,7 +33,7 @@ class Graph
             string[] stringSplitByColon = line.Split(':');
             if (stringSplitByColon.Length < 2 || !int.TryParse(stringSplitByColon[0], out int startNode))
             {
-                throw new Exception("Incorrect input data");     //////////
+                throw new InvalidDataException();
             }
 
             if (!nodes.Contains(startNode))
@@ -48,7 +48,7 @@ class Graph
                 if (!int.TryParse(node.Split('(')[0].Replace(" ", ""), out int endNode)
                     || !int.TryParse(node.Split('(')[1].Replace(" ", "").Replace(")", ""), out int weight))
                 {
-                    throw new Exception("Incorrect input data");      //////////
+                    throw new InvalidDataException();
                 }
 
                 while (endNode >= sizeOfMatrix || startNode >= sizeOfMatrix)
@@ -65,10 +65,9 @@ class Graph
 
                 if (edges.ContainsKey((startNode, endNode)) || edges.ContainsKey((endNode, startNode)))
                 {
-                    throw new Exception("Incorrect input data1"); ///////////////////
+                    throw new RepeatedDeclaringEdgeException("Repeated declaring a edge");
                 }
                 edges.Add((startNode, endNode), weight);
-
             }
         }
     }
@@ -96,15 +95,13 @@ class Graph
         }
         var minNode = nodes.Min();
         return nodes.Count == DepthFirstSearch(minNode, ref visited);
-
     }
 
     private int DepthFirstSearch (int startNode, ref Dictionary<int, bool> visited)
     {
         int visitedNodes = 1;
         visited[startNode] = true;
-
-        for (int j = 0; j < sizeOfMatrix; ++j)
+        for (int j = nodes.Min(); j <= nodes.Max(); ++j)
         {
             if (Matrix[startNode, j] > 0)
             {
@@ -139,8 +136,11 @@ class Graph
         }
     }
 
-    public void PrintGraph()
+    public void PrintGraphToFile(string pathToOutputFile)
     {
+        FileStream outputFile = File.Create(pathToOutputFile);
+        using StreamWriter output = new StreamWriter(outputFile);
+
         var visitedEdge = new Dictionary<(int, int), bool>();
         foreach (var edge in edges)
         {
@@ -158,16 +158,16 @@ class Graph
                 {
                     if (needToPrintStartNode)
                     {
-                        Console.Write(i + ": ");
+                        output.Write($"{i}: ");
                         needToPrintStartNode = false;
                     }
                     if (needToPrintCommaBeforeNode)
                     {
-                        Console.Write(", " + j + " (" + Matrix[i, j] + ")");
+                        output.Write($", {j} ({Matrix[i, j]})");
                     }
                     else
                     {
-                        Console.Write(j + " (" + Matrix[i, j] + ")");
+                        output.Write($"{j} ({Matrix[i, j]})");
                         needToPrintCommaBeforeNode = true;
                     }
                     visitedEdge[(i, j)] = true;
@@ -176,9 +176,8 @@ class Graph
             }
             if (!needToPrintStartNode)
             {
-                Console.WriteLine();
+                output.WriteLine();
             }
         }
     }
-
 }
