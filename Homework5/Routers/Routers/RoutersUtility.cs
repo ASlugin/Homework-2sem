@@ -1,5 +1,8 @@
 ﻿namespace Routers;
 
+/// <summary>
+/// Class for utility which let to generate configuration for routers
+/// </summary>
 static class RoutersUtility
 {
     /// <summary>
@@ -32,6 +35,5 @@ static class RoutersUtility
             Console.Error.WriteLine(exc.Message);
             return false;
         }
-        
     }
 }

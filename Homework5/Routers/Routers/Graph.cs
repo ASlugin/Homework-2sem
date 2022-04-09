@@ -1,6 +1,9 @@
 ﻿namespace Routers;
 
-class Graph
+/// <summary>
+/// Class for graph and methods for work with it
+/// </summary>
+public class Graph
 {
     private int[,] matrix;
     private int sizeOfMatrix = 5;
@@ -38,12 +41,23 @@ class Graph
                 nodes.Add(startNode);
             }
 
-            string[] stringOfNodesSplitByComma = stringSplitByColon[1].Split(',');
-
-            foreach (var node in stringOfNodesSplitByComma)
+            string[] stringOfNodesSplitByoCloseBracket = stringSplitByColon[1].Replace(",", "").Replace(" ", "").Split(')');
+            if (stringOfNodesSplitByoCloseBracket.Length < 2)
             {
-                if (!int.TryParse(node.Split('(')[0].Replace(" ", ""), out int endNode)
-                    || !int.TryParse(node.Split('(')[1].Replace(" ", "").Replace(")", ""), out int weight))
+                throw new InvalidDataException();
+            }
+            foreach (var node in stringOfNodesSplitByoCloseBracket)
+            {
+                if (string.Compare(node, "") == 0)
+                {
+                    continue;
+                }
+                if (node.Split('(').Length < 2)
+                {
+                    throw new InvalidDataException();
+                }
+                if (!int.TryParse(node.Split('(')[0], out int endNode)
+                    || !int.TryParse(node.Split('(')[1], out int weight))
                 {
                     throw new InvalidDataException();
                 }
