@@ -1,5 +1,8 @@
 ﻿namespace Game;
 
+/// <summary>
+/// Class that contain event proessing cycle and handlers for arrows and escape
+/// </summary>
 public class EventLoop
 {
     public event EventHandler<EventArgs> LeftHandler = (sender, args) => { };
@@ -7,6 +10,10 @@ public class EventLoop
     public event EventHandler<EventArgs> UpHandler = (sender, args) => { };
     public event EventHandler<EventArgs> DownHandler = (sender, args) => { };
     public event EventHandler<EventArgs> EscapeHandler = (sender, args) => { };
+
+    /// <summary>
+    /// Сauses handlers if arrows or escape have been pressed
+    /// </summary>
     public void Run()
     {
         while (true)
