@@ -1,5 +1,5 @@
 ﻿namespace Vector;
-class SparseVector
+public class SparseVector
 {
     private Dictionary<int, int> vector;
     private int length = 0;
