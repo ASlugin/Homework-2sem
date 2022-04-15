@@ -1,11 +1,16 @@
-﻿namespace Game;
-
-using System;
+﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Game.Tests")]
+
+/// <summary>
+/// Class for game, contains methods that cause by handlers
+/// </summary>
+namespace Game;
 public class Game
 {
-    private (int, int) position;
+    internal (int, int) position;
 
     private char[,] map;
     private int width = 0;
@@ -14,11 +19,18 @@ public class Game
     private int points = 0;
     private (int, int) positionPoints;
 
+    private bool itIsTest = false;
+
     public Game(string path)
     {
+        if (!File.Exists(path))
+        {
+            Console.Error.WriteLine("File on specified path doesn't exist");
+            Environment.Exit(-1);
+        }
         string[] mapFromFile = File.ReadAllLines(path);
         int maxWidth = 0;
-        foreach(var line in mapFromFile)
+        foreach (var line in mapFromFile)
         {
             maxWidth = Math.Max(maxWidth, line.Length);
         }
@@ -34,26 +46,53 @@ public class Game
                 {
                     case '#':
                         map[x, y] = '#';
-                        Console.SetCursorPosition(x, y);
-                        Console.Write('#');
                         break;
                     case '@':
                         position = (x, y);
-                        Console.SetCursorPosition(x, y);
-                        Console.Write('@');
                         break;
                     case '$':
                         map[x, y] = '$';
-                        Console.SetCursorPosition(x, y);
-                        Console.Write('$');
                         break;
                     default:
-                        Console.SetCursorPosition(x, y);
-                        Console.Write(' ');
                         break;
                 }
             }
         }
+        if (!path.Contains("Test"))
+        {
+            PrintMap();
+        }
+        else
+        {
+            itIsTest = true;
+        }
+        
+    }
+
+    private void PrintMap()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                switch (map[x, y])
+                {
+                    case '#':
+                        Console.Write('#');
+                        break;
+                    case '$':
+                        Console.Write('$');
+                        break;
+                    default:
+                        Console.Write(' ');
+                        break;
+                }
+            }
+            Console.WriteLine();
+        }
+        Console.SetCursorPosition(position.Item1, position.Item2);
+        Console.Write('@');
+
         Console.SetCursorPosition(0, height);
         Console.Write("Your points: ");
         positionPoints = Console.GetCursorPosition();
@@ -64,8 +103,9 @@ public class Game
         Console.WriteLine("Don't crash into #");
         Console.WriteLine("Try to collect as many $ as you can");
         Console.WriteLine("To exit, type Escape");
-
     }
+
+
 
     /// <summary>
     /// Moves player to left
@@ -161,10 +201,19 @@ public class Game
             map[position.Item1 + deltaX, position.Item2 + deltaY] = '\0';
             CreateNewGoal();
         }
-        Console.SetCursorPosition(position.Item1, position.Item2);
-        Console.Write(' ');
-        position = (position.Item1 + deltaX, position.Item2 + deltaY);
-        Console.SetCursorPosition(position.Item1, position.Item2);
-        Console.Write('@');
+
+        if (!itIsTest)
+        {
+            Console.SetCursorPosition(position.Item1, position.Item2);
+            Console.Write(' ');
+            position = (position.Item1 + deltaX, position.Item2 + deltaY);
+            Console.SetCursorPosition(position.Item1, position.Item2);
+            Console.Write('@');
+        }
+        else
+        {
+            position = (position.Item1 + deltaX, position.Item2 + deltaY);
+        }
+        
     }
 }
