@@ -17,12 +17,12 @@ namespace Calculator
         public CalculatorForm()
         {
             InitializeComponent();
-            textBox.DataBindings.Add("Text", calculating, "TextForTextBox", false, DataSourceUpdateMode.OnValidation);
+            textBox.DataBindings.Add("Text", calculating, "TextForTextBox", true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void OnDigitOperationAndDotButtonClick(object sender, EventArgs e)
         {
-            textBox.Text += (sender as Button).Text;
+            textBox.Text = textBox.Text + (sender as Button).Text;
             calculating.Calculate();
         }
 

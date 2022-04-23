@@ -42,9 +42,13 @@ namespace Calculator
         }
 
         private States state = States.begin;
+        
+
         public void Calculate()
         {
-            TextForTextBox = "0000";
+
+            
+            
         }
 
     }
