@@ -49,7 +49,7 @@
             this.buttonBackspace = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
             this.buttonSqrt = new System.Windows.Forms.Button();
-            this.buttonQrt = new System.Windows.Forms.Button();
+            this.buttonSqr = new System.Windows.Forms.Button();
             this.buttonDot = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -82,7 +82,7 @@
             this.tableLayoutPanel1.Controls.Add(this.buttonBackspace, 4, 1);
             this.tableLayoutPanel1.Controls.Add(this.buttonClear, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.buttonSqrt, 4, 2);
-            this.tableLayoutPanel1.Controls.Add(this.buttonQrt, 4, 3);
+            this.tableLayoutPanel1.Controls.Add(this.buttonSqr, 4, 3);
             this.tableLayoutPanel1.Controls.Add(this.buttonDot, 2, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
@@ -113,6 +113,7 @@
             this.textBox.TabIndex = 0;
             this.textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
+            this.textBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyUp);
             // 
             // button1
             // 
@@ -267,6 +268,7 @@
             this.buttonEqual.TabIndex = 17;
             this.buttonEqual.Text = "=";
             this.buttonEqual.UseVisualStyleBackColor = true;
+            this.buttonEqual.Click += new System.EventHandler(this.OnDigitOperationAndDotButtonClick);
             // 
             // buttonPlus
             // 
@@ -336,7 +338,7 @@
             this.buttonBackspace.TabIndex = 18;
             this.buttonBackspace.Text = "<=";
             this.buttonBackspace.UseVisualStyleBackColor = true;
-            this.buttonBackspace.Click += new System.EventHandler(this.OnBackSpaceButtonClick);
+            this.buttonBackspace.Click += new System.EventHandler(this.OnBackspaceButtonClick);
             // 
             // buttonClear
             // 
@@ -365,19 +367,21 @@
             this.buttonSqrt.TabIndex = 15;
             this.buttonSqrt.Text = "√x";
             this.buttonSqrt.UseVisualStyleBackColor = true;
+            this.buttonSqrt.Click += new System.EventHandler(this.OnSqrtButtonClick);
             // 
-            // buttonQrt
+            // buttonSqr
             // 
-            this.buttonQrt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonQrt.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonQrt.Location = new System.Drawing.Point(300, 222);
-            this.buttonQrt.Margin = new System.Windows.Forms.Padding(0);
-            this.buttonQrt.MinimumSize = new System.Drawing.Size(60, 50);
-            this.buttonQrt.Name = "buttonQrt";
-            this.buttonQrt.Size = new System.Drawing.Size(76, 74);
-            this.buttonQrt.TabIndex = 16;
-            this.buttonQrt.Text = "x²";
-            this.buttonQrt.UseVisualStyleBackColor = true;
+            this.buttonSqr.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonSqr.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonSqr.Location = new System.Drawing.Point(300, 222);
+            this.buttonSqr.Margin = new System.Windows.Forms.Padding(0);
+            this.buttonSqr.MinimumSize = new System.Drawing.Size(60, 50);
+            this.buttonSqr.Name = "buttonSqr";
+            this.buttonSqr.Size = new System.Drawing.Size(76, 74);
+            this.buttonSqr.TabIndex = 16;
+            this.buttonSqr.Text = "x²";
+            this.buttonSqr.UseVisualStyleBackColor = true;
+            this.buttonSqr.Click += new System.EventHandler(this.OnSqrButtonClick);
             // 
             // buttonDot
             // 
@@ -389,7 +393,7 @@
             this.buttonDot.Name = "buttonDot";
             this.buttonDot.Size = new System.Drawing.Size(75, 77);
             this.buttonDot.TabIndex = 10;
-            this.buttonDot.Text = ".";
+            this.buttonDot.Text = ",";
             this.buttonDot.UseVisualStyleBackColor = true;
             this.buttonDot.Click += new System.EventHandler(this.OnDigitOperationAndDotButtonClick);
             // 
@@ -433,7 +437,7 @@
         private System.Windows.Forms.Button buttonBackspace;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.Button buttonSqrt;
-        private System.Windows.Forms.Button buttonQrt;
+        private System.Windows.Forms.Button buttonSqr;
         private System.Windows.Forms.Button buttonDot;
     }
 }

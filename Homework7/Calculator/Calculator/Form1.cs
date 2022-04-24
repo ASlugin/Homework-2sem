@@ -22,21 +22,44 @@ namespace Calculator
 
         private void OnDigitOperationAndDotButtonClick(object sender, EventArgs e)
         {
+
             textBox.Text = textBox.Text + (sender as Button).Text;
-            calculating.Calculate();
+            calculating.Validation();
+            textBox.Focus();
+            textBox.SelectionStart = textBox.TextLength;
         }
 
         private void OnClearButtonClick(object sender, EventArgs e)
         {
             textBox.Text = "";
+            calculating.Validation();
+            textBox.Focus();
+            textBox.SelectionStart = textBox.TextLength;
         }
 
-        private void OnBackSpaceButtonClick(object sender, EventArgs e)
+        private void OnBackspaceButtonClick(object sender, EventArgs e)
         {
             if (textBox.Text.Length > 0)
             {
                 textBox.Text = textBox.Text.Substring(0, textBox.Text.Length - 1);
+                calculating.ValidationForBackspace();
             }
+            textBox.Focus();
+            textBox.SelectionStart = textBox.TextLength;
+        }
+
+        private void OnSqrButtonClick(object sender, EventArgs e)
+        {
+            calculating.ValidationForSqr();
+            textBox.Focus();
+            textBox.SelectionStart = textBox.TextLength;
+        }
+
+        private void OnSqrtButtonClick(object sender, EventArgs e)
+        {
+            calculating.ValidationForSqrt();
+            textBox.Focus();
+            textBox.SelectionStart = textBox.TextLength;
         }
 
         private void textBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -45,7 +68,35 @@ namespace Calculator
             {
                 e.Handled = true;
             }
+            if (e.KeyChar == '.')
+            {
+                e.KeyChar = ',';
+            }
         }
 
+        private void textBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            bool needValidation = true;
+            if (e.KeyCode == Keys.Enter)
+            {
+                textBox.Text += "=";
+                calculating.Validation();
+                needValidation = false;
+            }
+            if (e.KeyCode == Keys.Back)
+            {
+                if (textBox.Text.Length > 0)
+                {
+                    calculating.ValidationForBackspace();
+                    needValidation = false;
+                }
+            }
+            if (needValidation)
+            {
+                calculating.Validation();
+            }
+            textBox.Focus();
+            textBox.SelectionStart = textBox.TextLength;
+        }
     }
 }
