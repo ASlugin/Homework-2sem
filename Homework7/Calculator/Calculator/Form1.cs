@@ -20,10 +20,23 @@ namespace Calculator
             textBox.DataBindings.Add("Text", calculating, "TextForTextBox", true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
+        private void PaintTableLayoutPanel1(object sender, TableLayoutCellPaintEventArgs e)
+        {
+            if (e.Row == 0)
+            {
+                e.Graphics.FillRectangle(Brushes.White, e.CellBounds);
+            }
+            if (e.Row == 1)
+            {
+                var topLeft = e.CellBounds.Location;
+                var topRight = new Point(e.CellBounds.Right, e.CellBounds.Top);
+                e.Graphics.DrawLine(Pens.Black, topLeft, topRight);
+            }
+        }
+
         private void OnDigitOperationAndDotButtonClick(object sender, EventArgs e)
         {
-
-            textBox.Text = textBox.Text + (sender as Button).Text;
+            textBox.Text = textBox.Text + (sender as Button)?.Text;
             calculating.Validation();
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
@@ -42,22 +55,24 @@ namespace Calculator
             if (textBox.Text.Length > 0)
             {
                 textBox.Text = textBox.Text.Substring(0, textBox.Text.Length - 1);
-                calculating.ValidationForBackspace();
             }
+            calculating.validationForBackspace();
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
         }
 
         private void OnSqrButtonClick(object sender, EventArgs e)
         {
-            calculating.ValidationForSqr();
+            textBox.Text += '²';
+            calculating.Validation();
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
         }
 
         private void OnSqrtButtonClick(object sender, EventArgs e)
         {
-            calculating.ValidationForSqrt();
+            textBox.Text += '√';
+            calculating.Validation();
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
         }
@@ -76,7 +91,7 @@ namespace Calculator
 
         private void textBox_KeyUp(object sender, KeyEventArgs e)
         {
-            bool needValidation = true;
+            /*bool needValidation = true;
             if (e.KeyCode == Keys.Enter)
             {
                 textBox.Text += "=";
@@ -96,7 +111,8 @@ namespace Calculator
                 calculating.Validation();
             }
             textBox.Focus();
-            textBox.SelectionStart = textBox.TextLength;
+            textBox.SelectionStart = textBox.TextLength;*/
         }
     }
 }
+
