@@ -1,19 +1,23 @@
 ﻿namespace Vector;
+
+/// <summary>
+/// Class for sparse vector
+/// </summary>
 public class SparseVector
 {
     private Dictionary<int, int> vector;
-    private int length = 0;
+    public int Length { get; private set; } = 0;
 
     private SparseVector(int length)
     {
         this.vector = new();
-        this.length = length;
+        this.Length = length;
     }
 
     public SparseVector(string inputVector)
     {
         this.vector = new();
-        this.length = inputVector.Length;
+        this.Length = inputVector.Length;
         for (int i = 0; i < inputVector.Length; i++)
         {
             int currentNumber = int.Parse(inputVector.Substring(i, 1));
@@ -26,23 +30,28 @@ public class SparseVector
 
     public SparseVector(Dictionary<int, int> inputVector, int length)
     {
+        foreach (var position in inputVector)
+        {
+            if (inputVector[position.Key] == 0)
+            {
+                inputVector.Remove(position.Key);
+            }
+        }
         this.vector = inputVector;
-        this.length = length;
+        this.Length = length;
     }
 
     /// <summary>
     /// Creates new sparse vector with result of addition firstVector and secondVector
     /// </summary>
-    /// <param name="firstVector"></param>
-    /// <param name="secondVector"></param>
-    /// <returns>If the length of the vectors is different, returns null, else returns new SparceVector</returns>
-    public static SparseVector? Addition(SparseVector firstVector, SparseVector secondVector)
+    /// <returns>Returns new Sparse vector</returns>
+    public static SparseVector Addition(SparseVector firstVector, SparseVector secondVector)
     {
-        if (firstVector.length != secondVector.length)
+        if (firstVector.Length != secondVector.Length)
         {
-            return null;
+            throw new ArgumentException("Lengths of vectors are different!");
         }
-        SparseVector resultVector = new(firstVector.length);
+        SparseVector resultVector = new(firstVector.Length);
         
         foreach (var elementOfFirst in firstVector.vector)
         {
@@ -80,16 +89,14 @@ public class SparseVector
     /// <summary>
     /// Creates new sparse vector with result of subtraction firstVector and secondVector
     /// </summary>
-    /// <param name="firstVector"></param>
-    /// <param name="secondVector"></param>
     /// <returns>If length of the vectors is different, returns null, else returns new SparceVector</returns>
-    public static SparseVector? Subtraction(SparseVector firstVector, SparseVector secondVector)
+    public static SparseVector Subtraction(SparseVector firstVector, SparseVector secondVector)
     {
-        if (firstVector.length != secondVector.length)
+        if (firstVector.Length != secondVector.Length)
         {
-            return null;
+            throw new ArgumentException("Lengths of vectors are different!");
         }
-        SparseVector resultVector = new(firstVector.length);
+        SparseVector resultVector = new(firstVector.Length);
 
         foreach (var elementOfFirst in firstVector.vector)
         {
@@ -125,19 +132,16 @@ public class SparseVector
     }
 
     /// <summary>
-    /// Puts in result the scalar multiplication of vectors
+    /// Calculates the scalar multiplication of vectors
     /// </summary>
-    /// <param name="firstVector"></param>
-    /// <param name="secondVector"></param>
-    /// <param name="result"></param>
-    /// <returns>True if scalar multiplication is able to evaluate, else return false</returns>
-    public static bool ScalarMultiplication(SparseVector firstVector, SparseVector secondVector, ref int result)
+    /// <returns>Returns the scalat multiplication of vectors</returns>
+    public static int ScalarMultiplication(SparseVector firstVector, SparseVector secondVector)
     {
-        if (firstVector.length != secondVector.length)
+        if (firstVector.Length != secondVector.Length)
         {
-            return false;
+            throw new ArgumentException("Lengths of vectors are different!");
         }
-        result = 0;
+        int result = 0;
         foreach (var elementsOfFirst in firstVector.vector)
         {
             if (secondVector.vector.ContainsKey(elementsOfFirst.Key))
@@ -145,25 +149,22 @@ public class SparseVector
                 result += elementsOfFirst.Value * secondVector.vector[elementsOfFirst.Key];
             }
         }
-        return true;
+        return result;
     }
 
     /// <summary>
     /// Checks whether given vector is contatin only zero elements
     /// </summary>
-    /// <param name="vector"></param>
     /// <returns>True if vectors contain only zero elements, else returns false</returns>
-    public bool IsItZeroVector(SparseVector vector)
-    {
-        return vector.vector.Count == 0;
-    }
+    public static bool IsItZeroVector(SparseVector vector)
+        => vector.vector.Count == 0;
 
     /// <summary>
     /// Prints length of vector and all nonzero elements in form [<index>, <value>]
     /// </summary>
     public void PrintVector()
     {
-        Console.WriteLine($"Length of vector: {length}");
+        Console.WriteLine($"Length of vector: {Length}");
         foreach (var element in vector)
         {
             Console.WriteLine(element);
