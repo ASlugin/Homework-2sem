@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalculatorForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.textBox = new System.Windows.Forms.TextBox();
             this.button0 = new System.Windows.Forms.Button();
@@ -400,10 +401,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(559, 503);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(370, 350);
             this.Name = "CalculatorForm";
             this.Padding = new System.Windows.Forms.Padding(3);
-            this.Text = "Form1";
+            this.Text = "Calculator";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

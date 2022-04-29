@@ -31,11 +31,6 @@ namespace Calculator
             }
         }
 
-        private enum Operation
-        {
-            Addition, Subtraction, Multiplication, Division
-        }
-
         private double firstNumber = 0;
         private double secondNumber = 0;
         private char operation;
@@ -66,14 +61,14 @@ namespace Calculator
             }
         }
 
-        public void Validation()
+        public bool Validation()
         {
             if (TextForTextBox.Length == 0)
             {
                 state = State.Begin;
                 dotIsAllowed = true;
                 positionOfOperation = 0;
-                return;
+                return true;
             }
             char lastSymbol = TextForTextBox[TextForTextBox.Length - 1];
             char prevLastSymbol = TextForTextBox.Length < 2 ? '\0' : TextForTextBox[TextForTextBox.Length - 2];
@@ -84,45 +79,44 @@ namespace Calculator
                 if (state == State.FirstNumber)
                 {
                     TextForTextBox = textForTextBoxWithoutLastSymbol;
-                    return;
+                    return true;
                 }
                 else if (state == State.Operation)
                 {
                     TextForTextBox = textForTextBoxWithoutLastSymbol.Substring(0, textForTextBoxWithoutLastSymbol.Length - 1);
                     state = State.FirstNumber;
                     dotIsAllowed = false;
-                    return;
+                    return true;
                 }
                 else if (state == State.SecondNumber)
                 {
                     if (prevLastSymbol == ',')
                     {
                         TextForTextBox = textForTextBoxWithoutLastSymbol;
-                        return;
+                        return true;
                     }
                     if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || (operation == '/' && secondNumber == 0))
                     {
                         TextForTextBox = "";
                         state = State.Begin;
                         dotIsAllowed = true;
-                        return;
+                        return false;
                     }
                     TextForTextBox = Calculate().ToString();
                     state = State.FirstNumber;
                     dotIsAllowed = false;
-                    return;
+                    return true;
                 }
                 TextForTextBox = textForTextBoxWithoutLastSymbol;
-                return;
+                return true;
             }
-
 
             if (state == State.Begin)
             {
                 if (lastSymbol == '-' || lastSymbol == '+' || Char.IsDigit(lastSymbol))
                 {
                     state = State.FirstNumber;
-                    return;
+                    return true;
                 }
             }
             else if (state == State.FirstNumber)
@@ -130,18 +124,18 @@ namespace Calculator
                 if (prevLastSymbol == ',' && !Char.IsDigit(lastSymbol))
                 {
                     TextForTextBox = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
-                    return;
+                    return true;
                 }
                 else if (Char.IsDigit(lastSymbol))
                 {
-                    return;
+                    return true;
                 }
                 else if (lastSymbol == ',')
                 {
                     if (dotIsAllowed)
                     {
                         dotIsAllowed = false;
-                        return;
+                        return true;
                     }
                 }
                 else if (IsOperation(lastSymbol))
@@ -151,12 +145,12 @@ namespace Calculator
                         TextForTextBox = "";
                         state = State.Begin;
                         dotIsAllowed = true;
-                        return;
+                        return false;
                     }
                     operation = lastSymbol;
                     positionOfOperation = TextForTextBox.Length - 1;
                     state = State.Operation;
-                    return;
+                    return true;
                 }
                 else if (lastSymbol == '²')
                 {
@@ -165,12 +159,12 @@ namespace Calculator
                         TextForTextBox = "";
                         state = State.Begin;
                         dotIsAllowed = true;
-                        return;
+                        return false;
                     }
                     firstNumber *= firstNumber;
                     TextForTextBox = firstNumber.ToString();
                     dotIsAllowed = false;
-                    return;
+                    return true;
                 }
                 else if (lastSymbol == '√')
                 {
@@ -179,12 +173,12 @@ namespace Calculator
                         TextForTextBox = "";
                         state = State.Begin;
                         dotIsAllowed = true;
-                        return;
+                        return false;
                     }
                     firstNumber = Math.Sqrt(firstNumber);
                     TextForTextBox = firstNumber.ToString();
                     dotIsAllowed = false;
-                    return;
+                    return true;
                 }
             }
             else if (state == State.Operation)
@@ -193,7 +187,7 @@ namespace Calculator
                 {
                     state = State.SecondNumber;
                     dotIsAllowed = true;
-                    return;
+                    return true;
                 }
             }
             else if (state == State.SecondNumber)
@@ -201,18 +195,18 @@ namespace Calculator
                 if (prevLastSymbol == ',' && !Char.IsDigit(lastSymbol))
                 {
                     TextForTextBox = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
-                    return;
+                    return true;
                 }
                 else if (Char.IsDigit(lastSymbol))
                 {
-                    return;
+                    return true;
                 }
                 else if (lastSymbol == ',')
                 {
                     if (dotIsAllowed)
                     {
                         dotIsAllowed = false;
-                        return;
+                        return true;
                     }
                 }
                 else if (IsOperation(lastSymbol))
@@ -222,7 +216,7 @@ namespace Calculator
                         TextForTextBox = "";
                         state = State.Begin;
                         dotIsAllowed = true;
-                        return;
+                        return false;
                     }
                     var result = Calculate();
                     TextForTextBox = result.ToString() + lastSymbol;
@@ -231,7 +225,7 @@ namespace Calculator
                     positionOfOperation = TextForTextBox.Length - 1;
                     state = State.Operation;
                     dotIsAllowed = true;
-                    return;
+                    return true;
                 }
                 else if (lastSymbol == '²')
                 {
@@ -240,35 +234,37 @@ namespace Calculator
                         TextForTextBox = "";
                         state = State.Begin;
                         dotIsAllowed = true;
-                        return;
+                        return false;
                     }
                     var result = Math.Pow(Calculate(), 2);
                     TextForTextBox = result.ToString();
                     state = State.FirstNumber;
                     dotIsAllowed = false;
-                    return;
+                    return true;
                 }
                 else if (lastSymbol == '√')
                 {
                     double result;
-                    if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || (result = Calculate()) < 0)
+                    if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) 
+                        || (result = Calculate()) < 0 || operation == '/' && secondNumber == 0)
                     {
                         TextForTextBox = "";
                         state = State.Begin;
                         dotIsAllowed = true;
-                        return;
+                        return false;
                     }
                     result = Math.Sqrt(result);
                     TextForTextBox = result.ToString();
                     state = State.FirstNumber;
                     dotIsAllowed = false;
-                    return;
+                    return true;
                 }
             }
             TextForTextBox = textForTextBoxWithoutLastSymbol;
+            return true;
         }
 
-        public void validationForBackspace()
+        public bool validationForBackspace()
         {
             string text = TextForTextBox;
             TextForTextBox = "";
@@ -278,8 +274,16 @@ namespace Calculator
             foreach (var symbol in text)
             {
                 TextForTextBox += symbol;
-                Validation();
+                if (!Validation())
+                {
+                    TextForTextBox = "";
+                    state = State.Begin;
+                    dotIsAllowed = true;
+                    positionOfOperation = 0;
+                    return false;
+                }
             }
+            return true;
         }
 
     }

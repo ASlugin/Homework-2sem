@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Calculator
+﻿namespace Calculator
 {
     public partial class CalculatorForm : Form
     {
         private CalculatingClass calculating = new CalculatingClass();
-
+        private string textForErrorBox = "Error. Possible causes of the error:\n1. Division by zero\n2. Negative number under the square root";
         public CalculatorForm()
         {
             InitializeComponent();
@@ -37,7 +27,10 @@ namespace Calculator
         private void OnDigitOperationAndDotButtonClick(object sender, EventArgs e)
         {
             textBox.Text = textBox.Text + (sender as Button)?.Text;
-            calculating.Validation();
+            if (!calculating.Validation())
+            {
+                MessageBox.Show(textForErrorBox);
+            }
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
         }
@@ -56,7 +49,10 @@ namespace Calculator
             {
                 textBox.Text = textBox.Text.Substring(0, textBox.Text.Length - 1);
             }
-            calculating.validationForBackspace();
+            if (!calculating.validationForBackspace())
+            {
+                MessageBox.Show(textForErrorBox);
+            }
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
         }
@@ -64,7 +60,10 @@ namespace Calculator
         private void OnSqrButtonClick(object sender, EventArgs e)
         {
             textBox.Text += '²';
-            calculating.Validation();
+            if (!calculating.Validation())
+            {
+                MessageBox.Show(textForErrorBox);
+            }
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
         }
@@ -72,7 +71,10 @@ namespace Calculator
         private void OnSqrtButtonClick(object sender, EventArgs e)
         {
             textBox.Text += '√';
-            calculating.Validation();
+            if (!calculating.Validation())
+            {
+                MessageBox.Show(textForErrorBox);
+            }
             textBox.Focus();
             textBox.SelectionStart = textBox.TextLength;
         }
@@ -91,27 +93,30 @@ namespace Calculator
 
         private void textBox_KeyUp(object sender, KeyEventArgs e)
         {
-            /*bool needValidation = true;
             if (e.KeyCode == Keys.Enter)
             {
-                textBox.Text += "=";
-                calculating.Validation();
-                needValidation = false;
-            }
-            if (e.KeyCode == Keys.Back)
-            {
-                if (textBox.Text.Length > 0)
+                textBox.Text += '=';
+                if (!calculating.Validation())
                 {
-                    calculating.ValidationForBackspace();
-                    needValidation = false;
+                    MessageBox.Show(textForErrorBox);
                 }
             }
-            if (needValidation)
+            else if (e.KeyCode == Keys.Back)
             {
-                calculating.Validation();
+                if(!calculating.validationForBackspace())
+                {
+                    MessageBox.Show(textForErrorBox);
+                }
+            }
+            else
+            {
+                if (!calculating.Validation())
+                {
+                    MessageBox.Show(textForErrorBox);
+                }
             }
             textBox.Focus();
-            textBox.SelectionStart = textBox.TextLength;*/
+            textBox.SelectionStart = textBox.TextLength;
         }
     }
 }
