@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
 
 namespace Calculator;
 
@@ -11,7 +10,6 @@ public class CalculatingClass : INotifyPropertyChanged
     public CalculatingClass()
     {
         textForTextBox = "";
-        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("ru-RU");
     }
 
     private string textForTextBox;

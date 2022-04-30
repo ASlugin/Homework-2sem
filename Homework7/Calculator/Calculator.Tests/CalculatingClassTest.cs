@@ -1,10 +1,19 @@
 ﻿using NUnit.Framework;
 using Calculator;
+using System.Globalization;
+using System.Threading;
 
 namespace Calculato.Tests;
 
 public class Tests
 {
+    [SetUp]
+    public void Setup()
+    {
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("ru-RU");
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
+    }
+
     [TestCase("1+2+3+", ExpectedResult = "6+")]
     [TestCase("-4+7/1*", ExpectedResult = "3*")]
     [TestCase("1,56-0,56-", ExpectedResult = "1-")]
