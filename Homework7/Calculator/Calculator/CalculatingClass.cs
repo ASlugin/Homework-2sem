@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 
 namespace Calculator;
 
@@ -10,6 +11,7 @@ public class CalculatingClass : INotifyPropertyChanged
     public CalculatingClass()
     {
         textForTextBox = "";
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("ru-RU");
     }
 
     private string textForTextBox;
@@ -80,6 +82,8 @@ public class CalculatingClass : INotifyPropertyChanged
         char lastSymbol = TextForTextBox[TextForTextBox.Length - 1];
         char prevLastSymbol = TextForTextBox.Length < 2 ? '\0' : TextForTextBox[TextForTextBox.Length - 2];
         string textForTextBoxWithoutLastSymbol = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
+
+        
 
         if (lastSymbol == '=')
         {
