@@ -106,7 +106,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         return -1;
     }
 
-    void IList<T>.Insert(int index, T item)
+    public void Insert(int index, T item)
     {
         throw new NotSupportedException("New element cannot be inserted by index, skip list is sorted list.");
     }
@@ -148,14 +148,14 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
             throw new ArgumentOutOfRangeException();
         }
 
-        var currentNode = bottomHead;
+        var currentNode = bottomHead!.Next;
         int counter = 0;
         while (counter < arrayIndex)
         {
             currentNode = currentNode?.Next;
             counter++;
         }
-        while (currentNode?.Next != null)
+        while (currentNode != null)
         {
             array[counter - arrayIndex] = currentNode.Value!;
             currentNode = currentNode.Next;
@@ -192,7 +192,13 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         {
             throw new NotSupportedException();
         }
-        return RemoveRecursive(topHead!, item);
+
+        if (RemoveRecursive(topHead!, item))
+        {
+            Count--;
+            return true;
+        }
+        return false;
     }
 
     private bool RemoveRecursive(Node currentNode, T item)
@@ -227,6 +233,9 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
 
         var value = this[index];
         Remove(value);
+        //Для пользователя элементы с одинаковыми значениями не отличаются,
+        //поэтому можно удалить первый элемент с таким значением
+        //Пользователь всё равно ничего не заметит, наверное..
     }
 
     public IEnumerator GetEnumerator()
