@@ -90,7 +90,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         return null;
     }
 
-    public int IndexOf(T item) //
+    public int IndexOf(T item)
     {
         int counter = 0;
         Node? currentNode = bottomHead?.Next;
@@ -106,12 +106,12 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         return -1;
     }
 
-    void IList<T>.Insert(int index, T item) //
+    void IList<T>.Insert(int index, T item)
     {
         throw new NotSupportedException("New element cannot be inserted by index, skip list is sorted list.");
     }
 
-    public bool Contains(T item) //
+    public bool Contains(T item)
     {
         var currentNode = topHead;
         while (currentNode != null)
@@ -129,7 +129,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         return false;
     }
 
-    public void Clear() //
+    public void Clear()
     {
         if (IsReadOnly)
         {
@@ -141,7 +141,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         Count = 0;
     }
 
-    public void CopyTo(T[] array, int arrayIndex) //
+    public void CopyTo(T[] array, int arrayIndex)
     {
         if (arrayIndex >= Count || array.Length < Count - arrayIndex)
         {
@@ -163,7 +163,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         }
     }
 
-    public T this[int index] //
+    public T this[int index]
     {
         get
         {
@@ -186,7 +186,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         }
     }
 
-    public bool Remove(T item)//
+    public bool Remove(T item)
     {
         if (IsReadOnly)
         {
@@ -225,25 +225,19 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
             throw new ArgumentOutOfRangeException();
         }
 
-        var nodeForRemove = bottomHead!.Next;
-        int counter = 0;
-        while (counter < index)
-        {
-            nodeForRemove = nodeForRemove!.Next;
-            counter++;
-        }
-        var value = nodeForRemove!.Value!;
+        var value = this[index];
+        Remove(value);
+    }
 
-
+    public IEnumerator GetEnumerator()
+    {
+        var arrayOfElements = new T[Count];
+        CopyTo(arrayOfElements, 0);
+        return arrayOfElements.GetEnumerator();
     }
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
-        throw new NotImplementedException();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        throw new NotImplementedException();
+        return (IEnumerator<T>)GetEnumerator();
     }
 }
