@@ -34,8 +34,6 @@ public class ComparerPairByFirstItemsDescendingOrder : IComparer<(int, int)>
         return x.Item1 > y.Item1 ? -1 : 1;
     }
 }
-
-
 public class Tests
 {
     [Test]
@@ -89,6 +87,27 @@ public class Tests
         Assert.AreEqual((20, 5), listOfPairs[1]);
         Assert.AreEqual((9, 10), listOfPairs[2]);
         Assert.AreEqual((1, 2), listOfPairs[3]);
+    }
+
+    [Test]
+    public void BubbleSortIntByDescendingOrderShallWorkCorreclty()
+    {
+        List<int> list = new();
+        list.Add(2);
+        list.Add(3);
+        list.Add(7);
+        list.Add(5);
+        list.Add(4);
+        list.Add(1);
+        list.Add(6);
+        list.Add(0);
+
+        Sort.BubbleSort(list, new ComparerIntDescendingOrder());
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            Assert.AreEqual(7 - i, list[i]);
+        }
     }
 
 }
