@@ -16,7 +16,7 @@ public class AppearanceOfSCP0871 : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             System.Random random = new();
-            int randomNumber = random.Next(1, 99);
+            int randomNumber = random.Next(1, 100);
             if (randomNumber <= probability)
             {
                 Instantiate(scp0871a, new Vector3(15.75f, 10f, 1f), Quaternion.identity);

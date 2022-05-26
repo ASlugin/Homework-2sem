@@ -12,8 +12,7 @@ public class EnterProbability : MonoBehaviour
 
     public AppearanceOfSCP0871 scp0871;
 
-    public GameObject inputField;
-    public GameObject button;
+    public GameObject canvas;
 
     void Start()
     {
@@ -24,8 +23,7 @@ public class EnterProbability : MonoBehaviour
     {
         probability = Convert.ToInt32(textBox.GetComponent<Text>().text);
         scp0871.probability = probability;
-        inputField.SetActive(false);
-        button.SetActive(false);
+        canvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
     }

@@ -2436,7 +2436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4d2985cf6a14d4f93b88accdcbdf4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivityMouse: 200
+  sensitivityMouse: 100
   Player: {fileID: 1876070721}
 --- !u!1 &1006244335
 GameObject:
@@ -4616,8 +4616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textBox: {fileID: 1056874263}
   scp0871: {fileID: 188795685}
-  inputField: {fileID: 144979075}
-  button: {fileID: 1396490097}
+  canvas: {fileID: 1977340295}
 --- !u!4 &1649697710
 Transform:
   m_ObjectHideFlags: 0
@@ -5180,7 +5179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcbf768cdcf588b4bbbbbe78b3bd0278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 3
 --- !u!54 &1876070723
 Rigidbody:
   m_ObjectHideFlags: 0
