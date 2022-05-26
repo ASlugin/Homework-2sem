@@ -6,9 +6,7 @@ using System.Collections.Generic;
 public class ComparerString : IComparer<string>
 {
     int IComparer<string>.Compare(string? x, string? y)
-    {
-        return string.Compare(x, y);
-    }
+        => string.Compare(x, y);
 }
 
 public class ComparerPairBySecondItems : IComparer<(int, int)>
@@ -34,6 +32,7 @@ public class ComparerPairByFirstItemsDescendingOrder : IComparer<(int, int)>
         return x.Item1 > y.Item1 ? -1 : 1;
     }
 }
+
 public class Tests
 {
     [Test]
@@ -45,14 +44,10 @@ public class Tests
         list.Add("abcde");
         list.Add("a");
         list.Add("abcd");
-
+        var expectedList = new List<string> {"a", "ab", "abc", "abcd", "abcde"};
+        
         Sort.BubbleSort(list, new ComparerString());
-
-        Assert.AreEqual("a",list[0]);
-        Assert.AreEqual("ab", list[1]);
-        Assert.AreEqual("abc", list[2]);
-        Assert.AreEqual("abcd", list[3]);
-        Assert.AreEqual("abcde", list[4]);
+        Assert.AreEqual(expectedList, list);
     }
 
     [Test]
@@ -63,13 +58,10 @@ public class Tests
         listOfPairs.Add((20, 5));
         listOfPairs.Add((30, 7));
         listOfPairs.Add((1, 2));
+        var expectedList = new List<(int, int)> { (1, 2), (20, 5), (30, 7), (9, 10) };
 
         Sort.BubbleSort(listOfPairs, new ComparerPairBySecondItems());
-
-        Assert.AreEqual((1, 2),listOfPairs[0]);
-        Assert.AreEqual((20, 5), listOfPairs[1]);
-        Assert.AreEqual((30, 7), listOfPairs[2]);
-        Assert.AreEqual((9, 10), listOfPairs[3]);
+        Assert.AreEqual(expectedList, listOfPairs);
     }
 
     [Test]
@@ -80,13 +72,10 @@ public class Tests
         listOfPairs.Add((20, 5));
         listOfPairs.Add((30, 7));
         listOfPairs.Add((1, 2));
+        var expectedList = new List<(int, int)> { (30, 7), (20, 5), (9, 10), (1, 2) };
 
         Sort.BubbleSort(listOfPairs, new ComparerPairByFirstItemsDescendingOrder());
-        
-        Assert.AreEqual((30, 7), listOfPairs[0]);
-        Assert.AreEqual((20, 5), listOfPairs[1]);
-        Assert.AreEqual((9, 10), listOfPairs[2]);
-        Assert.AreEqual((1, 2), listOfPairs[3]);
+        Assert.AreEqual(expectedList, listOfPairs);
     }
 
     [Test]
