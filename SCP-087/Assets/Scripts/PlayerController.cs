@@ -38,9 +38,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Respawn")
+        if (collision.gameObject.tag == "RelocateUp")
         {
-            transform.position += new Vector3(0, 13f, 0);
+            transform.position += new Vector3(0, 7.5f, 0);
+        }
+        if (collision.gameObject.tag == "RelocateDown")
+        {
+            transform.position -= new Vector3(0, 7.5f, 0);
         }
         if (collision.gameObject.tag == "SCP0871")
         {

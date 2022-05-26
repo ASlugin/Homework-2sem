@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - SCP0871
+  - RelocateDown
+  - RelocateUp
   layers:
   - Default
   - TransparentFX
