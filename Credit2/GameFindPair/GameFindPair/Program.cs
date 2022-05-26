@@ -1,4 +1,4 @@
-namespace Game;
+namespace GameFindPair;
 
 internal static class Program
 {
@@ -10,9 +10,8 @@ internal static class Program
     {
         if (args.Length == 1 && int.TryParse(args[0], out int size))
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(size));
+            ApplicationConfiguration.Initialize();
+            Application.Run(new FormGame(size));
         }
     }
 }
