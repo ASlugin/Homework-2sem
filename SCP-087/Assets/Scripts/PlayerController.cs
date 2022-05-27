@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Speed of player's movement")]
     public float speed = 7f;
+
+    public Text numberFloor;
+    private int floor = 0;
+
+    public GameObject dead;
 
     void Update()
     {
@@ -40,15 +46,28 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "RelocateUp")
         {
-            transform.position += new Vector3(0, 7.5f, 0);
+            float positionZ = (float)3.5 - 2 * transform.position.z;
+            float positionX = (float)16 - 2 * transform.position.x;
+            transform.position += new Vector3(positionX, 6.5f, positionZ);
+            transform.Rotate(0, 180f, 0, Space.Self);
+            floor++;
+            numberFloor.text = floor.ToString();
         }
-        if (collision.gameObject.tag == "RelocateDown")
+        if (collision.gameObject.tag == "RelocateDown" && floor > 0)
         {
-            transform.position -= new Vector3(0, 7.5f, 0);
+            float positionZ = (float)3.5 - 2 * transform.position.z;
+            float positionX = (float)16 - 2 * transform.position.x;
+            transform.position += new Vector3(positionX, -6.5f, positionZ);
+            transform.Rotate(0, 180f, 0, Space.Self);
+            floor--;
+            numberFloor.text = floor.ToString();
         }
         if (collision.gameObject.tag == "SCP0871")
         {
-            Application.Quit();
+            dead.SetActive(true);
+            Time.timeScale = 0;
+            Cursor.lockState = CursorLockMode.None;
+            floor = 0;
         }
     }
 }

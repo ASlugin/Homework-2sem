@@ -76,6 +76,12 @@ ScriptsOnlyBuild:
   methodsToPreserve:
   - assembly: Assembly-CSharp
     fullTypeName: EnterProbability
+    methodName: Exit
+  - assembly: Assembly-CSharp
+    fullTypeName: EnterProbability
+    methodName: Retry
+  - assembly: Assembly-CSharp
+    fullTypeName: EnterProbability
     methodName: StoreProbability
   sceneClasses:
     Assets/Scenes/SampleScene.unity:
@@ -120,39 +126,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1614}
     - Class: 114
-      Script: {instanceID: 1926}
+      Script: {instanceID: 1924}
     - Class: 114
-      Script: {instanceID: 2394}
+      Script: {instanceID: 2392}
     - Class: 114
-      Script: {instanceID: 2920}
+      Script: {instanceID: 2918}
     - Class: 114
-      Script: {instanceID: 3178}
+      Script: {instanceID: 3176}
     - Class: 114
-      Script: {instanceID: 3236}
+      Script: {instanceID: 3234}
     - Class: 114
-      Script: {instanceID: 3336}
+      Script: {instanceID: 3334}
     - Class: 114
-      Script: {instanceID: 3546}
+      Script: {instanceID: 3544}
     - Class: 114
-      Script: {instanceID: 4062}
+      Script: {instanceID: 4060}
     - Class: 114
-      Script: {instanceID: 4702}
+      Script: {instanceID: 4700}
     - Class: 114
-      Script: {instanceID: 4832}
+      Script: {instanceID: 4830}
     - Class: 114
-      Script: {instanceID: 5146}
+      Script: {instanceID: 5144}
     - Class: 114
-      Script: {instanceID: 6036}
+      Script: {instanceID: 6034}
     - Class: 114
-      Script: {instanceID: 6396}
+      Script: {instanceID: 6394}
     - Class: 114
-      Script: {instanceID: 6794}
+      Script: {instanceID: 6792}
     - Class: 114
-      Script: {instanceID: 6980}
+      Script: {instanceID: 6978}
     - Class: 114
-      Script: {instanceID: 7404}
+      Script: {instanceID: 7402}
     - Class: 114
-      Script: {instanceID: 8570}
+      Script: {instanceID: 8568}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -234,7 +240,7 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionStayMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 02330dd833eb743dc9461d4a0b860cbf
+      Hash: d79a0ff936419eedba950da9d8c4891a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: EnterProbability
@@ -528,7 +534,7 @@ ScriptsOnlyBuild:
     className: TextMeshProFloatingText
   - hash:
       serializedVersion: 2
-      Hash: afc5b93a7b192de2dcb3832fe35a5c7e
+      Hash: 7ec4afd6e4d5ed8ed1da1217ee3893a5
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController
@@ -1122,7 +1128,7 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
-      Hash: 11ddf25b0c7d54c094945147e27f9f80
+      Hash: b1d96db187561341f4738c4a2b8d2f34
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AppearanceOfSCP0871
