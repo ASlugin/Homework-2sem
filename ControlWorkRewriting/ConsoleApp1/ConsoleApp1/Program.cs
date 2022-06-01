@@ -4,7 +4,7 @@ class Program
 {
     private static void Main(string[] args)
     {
-        QueuePriority<int> queue = new QueuePriority<int>();
+        var queue = new PriorityQueue<int>();
 
         Console.WriteLine("Commands for queue with priorities for integer elements:");
         Console.WriteLine("0 - exit");
@@ -17,7 +17,7 @@ class Program
             Console.Write("Enter a number of command: ");
             if (!int.TryParse(Console.ReadLine(), out int command))
             {
-                Console.WriteLine("Invallid command");
+                Console.WriteLine("Invalid command");
                 command = -1;
             }
             switch (command)
@@ -47,7 +47,7 @@ class Program
                         break;
                     }
                     int result = queue.Dequeue();
-                    Console.WriteLine($"Element from queueu: {result}");
+                    Console.WriteLine($"Element from queue: {result}");
                     break;
                 case 3:
                     Console.WriteLine(queue.Empty ? "Queue is empty" : "Queue is not empty");

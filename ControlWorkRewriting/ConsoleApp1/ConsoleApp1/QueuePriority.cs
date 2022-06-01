@@ -4,19 +4,19 @@ using System.Collections.Generic;
 /// <summary>
 /// Class for queue with priorities
 /// </summary>
-public class QueuePriority<T>
+public class PriorityQueue<T>
 {
     private List<(T, int)> list;
 
     /// <summary>
-    /// This property is true if list is empty, else false
+    /// True if queue is empty, else false
     /// </summary>
-    public bool Empty { get; private set; }
+    public bool Empty 
+        => list.Count == 0;
 
-    public QueuePriority()
+    public PriorityQueue()
     {
         list = new();
-        Empty = true;
     }
 
     /// <summary>
@@ -29,7 +29,6 @@ public class QueuePriority<T>
         if (list.Count == 0)
         {
             list.Add((value, priority));
-            Empty = false;
             return;
         }
 
@@ -54,14 +53,10 @@ public class QueuePriority<T>
     {
         if (list.Count == 0)
         {
-            throw new DequeueFromEnptyListException();
+            throw new DequeueFromEmptyQueueException();
         }
         T result = list[0].Item1;
         list.RemoveAt(0);
-        if (list.Count == 0)
-        {
-            Empty = true;
-        }
         return result;
     }
 }
