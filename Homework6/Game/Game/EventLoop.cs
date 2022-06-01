@@ -1,7 +1,7 @@
 ﻿namespace Game;
 
 /// <summary>
-/// Class that contain event proessing cycle and handlers for arrows and escape
+/// Class that contains event processing cycle and handlers for arrows and escape
 /// </summary>
 public class EventLoop
 {

@@ -1,16 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Runtime.CompilerServices;
+﻿namespace Game;
 
-[assembly: InternalsVisibleTo("Game.Tests")]
+using System;
+using System.IO;
 
 /// <summary>
 /// Class for game, contains methods that cause by handlers
 /// </summary>
-namespace Game;
 public class Game
 {
-    internal (int, int) position;
+    private (int, int) position;
 
     private char[,] map;
     private int width = 0;
@@ -26,7 +24,7 @@ public class Game
         if (!File.Exists(path))
         {
             Console.Error.WriteLine("File on specified path doesn't exist");
-            Environment.Exit(-1);
+            throw new DirectoryNotFoundException();
         }
         string[] mapFromFile = File.ReadAllLines(path);
         int maxWidth = 0;
@@ -105,53 +103,33 @@ public class Game
         Console.WriteLine("To exit, type Escape");
     }
 
-
-
     /// <summary>
     /// Moves player to left
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
     public void OnLeft(object? sender, EventArgs args)
-    {
-        ChangePosition(-1, 0);
-    }
+        => ChangePosition(-1, 0);
 
     /// <summary>
     /// Moves player to right
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
     public void OnRight(object? sender, EventArgs args)
-    {
-        ChangePosition(1, 0);
-    }
+        => ChangePosition(1, 0);
 
     /// <summary>
     /// Moves player up
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
     public void OnUp(object? sender, EventArgs args)
-    {
-        ChangePosition(0, -1);
-    }
+        => ChangePosition(0, -1);
 
     /// <summary>
     /// Moves player down
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
     public void OnDown(object? sender, EventArgs args)
-    {
-        ChangePosition(0, 1);
-    }
+        => ChangePosition(0, 1);
 
     /// <summary>
     /// Ends game and prints final sum of points
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
     public void Escape(object? sender, EventArgs args)
     {
         Console.Clear();
@@ -169,12 +147,13 @@ public class Game
         Console.Write(points);
     }
 
+    private Random random = new();
+
     private void CreateNewGoal()
     {
-        var random = new Random();
         int newX = random.Next(1, width - 1);
         int newY = random.Next(1, height - 1);
-        while (map[newX, newY] != '\0')
+        while (map[newX, newY] != '\0' || position.Equals((newX, newY)))
         {
             newX = random.Next(1, width - 1);
             newY = random.Next(1, height - 1);
@@ -214,6 +193,11 @@ public class Game
         {
             position = (position.Item1 + deltaX, position.Item2 + deltaY);
         }
-        
     }
+
+    /// <summary>
+    /// Returns position of player
+    /// </summary>
+    public (int, int) GetPosition()
+        => position;
 }
