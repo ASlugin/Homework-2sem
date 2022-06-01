@@ -1,17 +1,11 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using  UniqueList;
 
-namespace UniqueList.Tests;
+namespace UniqueListTests;
 
 public class ListTest
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     private static IEnumerable<TestCaseData> ListCases
         => new TestCaseData[]
         {

@@ -1,12 +1,9 @@
-﻿namespace UniqueList;
-
+﻿/// <summary>
+/// Class for data structure list
+/// </summary>
 public class List
 {
-    public List()
-    {
-    }
-
-    protected class ListElement
+    private class ListElement
     {
         public ListElement(int newValue, ListElement? next)
         {
@@ -17,7 +14,7 @@ public class List
         public ListElement? next;
     }
 
-    protected ListElement? head;
+    private ListElement? head;
 
     /// <summary>
     /// Amount of elements in the list
@@ -40,13 +37,9 @@ public class List
         ListElement current = head;
         for (int i = 0; i < position; i++)
         {
-            if (current == null || current.next == null)
-            {
-                throw new NullReferenceException();
-            }
-            current = current.next;
+            current = current.next!;
         }
-        return current;
+        return current!;
     }
 
     /// <summary>
@@ -137,5 +130,42 @@ public class List
             current = current?.next;
         }
         Console.WriteLine();
+    }
+
+    /// <summary>
+    /// Check whether given value exist in the list
+    /// </summary>
+    /// <returns>True if given value exist in list, else false</returns>
+    public bool Exist(int value)
+    {
+        ListElement? current = head;
+        for (int i = 0; i < Size; i++)
+        {
+            if (current?.value == value)
+            {
+                return true;
+            }
+            current = current?.next;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Returns position of first element with given value
+    /// </summary>
+    /// <param name="value">Value to search for element with this value</param>
+    /// <returns>Position of first element or -1 if given value doesn't exist in list</returns>
+    public int GetPositionOfFirstElementByValue(int value)
+    {
+        ListElement? current = head;
+        for (int i = 0; i < Size; i++)
+        {
+            if (current?.value == value)
+            {
+                return i;
+            }
+            current = current?.next;
+        }
+        return -1;
     }
 }

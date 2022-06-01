@@ -1,5 +1,6 @@
-﻿namespace UniqueList;
-
+﻿/// <summary>
+/// Exception is thrown if attempt was made to add existing value
+/// </summary>
 [Serializable]
 public class AttemptToAddExistingValueException : Exception
 {

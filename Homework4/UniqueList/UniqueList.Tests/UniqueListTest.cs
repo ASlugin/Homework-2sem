@@ -1,21 +1,13 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using UniqueList;
 
-namespace UniqueList.Tests;
+namespace UniqueListTests;
 
 public class UniqueListTest
 {
-    [SetUp]
-    public void SetUp()
-    {
-    }
-
     [Test]
     public void AddElementThatAlreadyExist()
     {
-        UniqueList list = new UniqueList();
+        var list = new UniqueList();
         list.Add(11, list.Size);
         list.Add(22, list.Size);
         Assert.Throws<AttemptToAddExistingValueException>(() => list.Add(11, 1));
@@ -25,7 +17,7 @@ public class UniqueListTest
     [Test]
     public void ChangeValueThatAlreadyExist()
     {
-        UniqueList list = new UniqueList();
+        var list = new UniqueList();
         list.Add(12, list.Size);
         list.Add(34, list.Size);
         Assert.Throws<AttemptToAddExistingValueException>(() => list.ChangeValueOfElement(12, 1));

@@ -1,5 +1,6 @@
-﻿namespace UniqueList;
-
+﻿/// <summary>
+/// Exception is thrown if attempt was made to delete nonexisting element
+/// </summary>
 [Serializable]
 public class AttemptToDeleteNonexistentElement : Exception
 {
