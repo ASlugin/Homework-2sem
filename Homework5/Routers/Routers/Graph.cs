@@ -6,7 +6,6 @@
 public class Graph
 {
     private int[,] matrix;
-    private int sizeOfMatrix = 5;
     private List<int> nodes;
     private Dictionary<(int, int), int> edges;
 
@@ -14,13 +13,12 @@ public class Graph
     {
         nodes = new();
         edges = new();
-        matrix = new int[sizeOfMatrix, sizeOfMatrix];
-        Initialization(pathInputFile);
+        matrix = new int[5, 5];
+        Initialize(pathInputFile);
     }
 
-    private void Initialization(string pathInputFile)
+    private void Initialize(string pathInputFile)
     {
-
         using StreamReader inputFile = new(pathInputFile);
         while (!inputFile.EndOfStream)
         {
@@ -41,12 +39,12 @@ public class Graph
                 nodes.Add(startNode);
             }
 
-            string[] stringOfNodesSplitByoCloseBracket = stringSplitByColon[1].Replace(",", "").Replace(" ", "").Split(')');
-            if (stringOfNodesSplitByoCloseBracket.Length < 2)
+            string[] stringOfNodesSplitByCloseBracket = stringSplitByColon[1].Replace(",", "").Replace(" ", "").Split(')');
+            if (stringOfNodesSplitByCloseBracket.Length < 2)
             {
                 throw new InvalidDataException();
             }
-            foreach (var node in stringOfNodesSplitByoCloseBracket)
+            foreach (var node in stringOfNodesSplitByCloseBracket)
             {
                 if (string.Compare(node, "") == 0)
                 {
@@ -62,7 +60,7 @@ public class Graph
                     throw new InvalidDataException();
                 }
 
-                while (endNode >= sizeOfMatrix || startNode >= sizeOfMatrix)
+                while (endNode >= matrix.GetLength(0) || startNode >= matrix.GetLength(0))
                 {
                     Resize();
                 }
@@ -85,11 +83,11 @@ public class Graph
 
     private void Resize()
     {
-        sizeOfMatrix *= 2;
-        var newMatrix = new int[sizeOfMatrix, sizeOfMatrix];
-        for (int i = 0; i < sizeOfMatrix / 2; i++)
+        var newSize = matrix.GetLength(0) * 2;
+        var newMatrix = new int[newSize, newSize];
+        for (int i = 0; i < newSize / 2; i++)
         {
-            for (int j = 0; j < sizeOfMatrix / 2; j++)
+            for (int j = 0; j < newSize / 2; j++)
             {
                 newMatrix[i, j] = matrix[i, j];
             }
@@ -101,7 +99,7 @@ public class Graph
     /// Check whether graph is connectivity
     /// </summary>
     /// <returns>Returns true if graph is connectivity, else returns false</returns>
-    public bool IsGraphConnectivity()
+    public bool IsGraphConnected()
     {
         var visited = new Dictionary<int, bool>();
         foreach (var node in nodes)
@@ -142,7 +140,7 @@ public class Graph
             matrix[startNode, endNode] = 0;
             matrix[endNode, startNode] = 0;
 
-            if (IsGraphConnectivity())
+            if (IsGraphConnected())
             {
                 edges.Remove(edge.Key);
             }

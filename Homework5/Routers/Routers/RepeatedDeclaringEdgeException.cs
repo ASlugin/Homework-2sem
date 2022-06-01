@@ -1,4 +1,9 @@
-﻿[Serializable]
+﻿namespace Routers;
+
+/// <summary>
+/// Exceptions that is thrown if attempt was made repeated declaring edge
+/// </summary>
+[Serializable]
 public class RepeatedDeclaringEdgeException : Exception
 {
     public RepeatedDeclaringEdgeException() { }

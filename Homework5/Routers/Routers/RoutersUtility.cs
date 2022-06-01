@@ -16,16 +16,16 @@ static class RoutersUtility
         try
         {
             var graph = new Graph(pathToInputFile);
-            if (!graph.IsGraphConnectivity())
+            if (!graph.IsGraphConnected())
             {
-                Console.Error.WriteLine("The graph is not connectivity");
+                Console.Error.WriteLine("The graph is not connected");
                 return false;
             }
             graph.RemoveUnnecessaryEdges();
             graph.PrintGraphToFile(pathToOutputFile);
             return true;
         }
-        catch(InvalidDataException)
+        catch (InvalidDataException)
         {
             Console.Error.WriteLine("Invalid input data");
             return false;

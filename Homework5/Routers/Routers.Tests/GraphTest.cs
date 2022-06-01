@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using Routers;
 
 using System;
 using System.IO;
@@ -37,24 +36,7 @@ namespace Routers.Tests
         public void CreatingGraphWithInvalidInputDataShallThrowExceprion(params string[] linesForFile)
         {
             PrintDataToFile(linesForFile);
-
-            bool testFail = true;
-            try
-            {
-                var a = new Graph(pathToInputFile);
-            }
-            catch (InvalidDataException)
-            {
-                testFail = false;
-            }
-            if (testFail)
-            {
-                Assert.Fail();
-            }
-            else
-            {
-                Assert.Pass();
-            }
+            Assert.Throws<InvalidDataException>(() => new Graph(pathToInputFile));
         }
 
         [TestCase(new object[] { "1: 2 (3), 4 (5)", "2: 1 (4)" })]
@@ -89,7 +71,7 @@ namespace Routers.Tests
         {
             PrintDataToFile(linesForFile);
             var graph = new Graph(pathToInputFile);
-            Assert.IsTrue(graph.IsGraphConnectivity());
+            Assert.IsTrue(graph.IsGraphConnected());
         }
 
         [TestCase(new object[] { "1: 2 (3), 4 (5)", "3: 5 (4)" })]
@@ -99,7 +81,7 @@ namespace Routers.Tests
         {
             PrintDataToFile(linesForFile);
             var graph = new Graph(pathToInputFile);
-            Assert.IsFalse(graph.IsGraphConnectivity());
+            Assert.IsFalse(graph.IsGraphConnected());
         }
 
         [TestCase(new object[] { "1: 2 (3), 3 (5)", "2: 3 (4)" })]
@@ -110,7 +92,7 @@ namespace Routers.Tests
             PrintDataToFile(linesForFile);
             var graph = new Graph(pathToInputFile);
             graph.RemoveUnnecessaryEdges();
-            Assert.IsTrue(graph.IsGraphConnectivity());
+            Assert.IsTrue(graph.IsGraphConnected());
         }
 
         [TestCase(new object[] { "1: 2 (10), 3 (5)", "2: 3 (1)" })]
