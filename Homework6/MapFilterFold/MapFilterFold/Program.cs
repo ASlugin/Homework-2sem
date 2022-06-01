@@ -1,6 +1,9 @@
 ﻿namespace MapFilterFold;
 
-public class Functions
+/// <summary>
+/// Class containing functions Map, Filter and Fold
+/// </summary>
+public static class Functions
 {
     /// <summary>
     /// Creates new list of elements from source list applying the function to all elements
