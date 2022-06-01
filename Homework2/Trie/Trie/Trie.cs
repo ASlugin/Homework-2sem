@@ -1,8 +1,6 @@
-﻿namespace Trie;
-
-using System;
-using System.Collections.Generic;
-
+﻿/// <summary>
+/// Class of data structure Trie
+/// </summary>
 class Trie
 {
     public Trie()
@@ -11,15 +9,19 @@ class Trie
     }
 
     private Element root;
+
     private class Element
     {
         public Element()
         {
             this.NextElements = new Dictionary<char, Element>();
             this.Terminal = false;
+            this.AmountOfPrefix = 0;
         }
+
         public Dictionary<char, Element> NextElements;
-        public bool Terminal;
+        public int AmountOfPrefix { get; set; }
+        public bool Terminal { get; set; }
     }
 
     /// <summary>
@@ -45,11 +47,13 @@ class Trie
                     {
                         Size++;
                         currentElement.NextElements[element[i]].Terminal = true;
+                        currentElement.NextElements[element[i]].AmountOfPrefix++;
                         return true;
                     }
                     return false;
                 }
                 currentElement = currentElement.NextElements[element[i]];
+                currentElement.AmountOfPrefix++;
             }
             else
             {
@@ -57,10 +61,12 @@ class Trie
                 if (i == element.Length - 1)
                 {
                     currentElement.NextElements[element[i]].Terminal = true;
+                    currentElement.NextElements[element[i]].AmountOfPrefix++;
                     Size++;
                     return true;
                 }
                 currentElement = currentElement.NextElements[element[i]];
+                currentElement.AmountOfPrefix++;
             }
         }
         return false;
@@ -100,34 +106,36 @@ class Trie
     public bool Remove(string element)
     {
         bool removeThisElement = false;
-        return RemoveRecursive(root, element, ref removeThisElement);
+        return RemoveRecursive(root, 0, element, ref removeThisElement);
     }
 
-    private bool RemoveRecursive(Element currentElement, string element, ref bool removeThisElement)
+    private bool RemoveRecursive(Element currentElement, int index, string element, ref bool removeThisElement)
     {
-        if (element.Length == 0)
+        if (index == element.Length)
         {
             if (currentElement.Terminal)
             {
                 Size--;
                 currentElement.Terminal = false;
-                removeThisElement = currentElement.NextElements.Count == 0 ? true : false;
+                currentElement.AmountOfPrefix--;
+                removeThisElement = currentElement.NextElements.Count == 0;
                 return true;
             }
             return false;
         }
 
-        if (currentElement.NextElements.ContainsKey(element[0]))
+        if (currentElement.NextElements.ContainsKey(element[index]))
         {
-            if (!RemoveRecursive(currentElement.NextElements[element[0]], element.Substring(1), ref removeThisElement))
+            if (!RemoveRecursive(currentElement.NextElements[element[index]], index + 1, element, ref removeThisElement))
             {
                 return false;
             }
             if (removeThisElement)
             {
-                currentElement.NextElements.Remove(element[0]);
-                removeThisElement = currentElement.NextElements.Count == 0 && !currentElement.Terminal ? true : false;
+                currentElement.NextElements.Remove(element[index]);
+                removeThisElement = currentElement.NextElements.Count == 0 && !currentElement.Terminal;
             }
+            currentElement.AmountOfPrefix--;
             return true;
         }
 
@@ -150,16 +158,6 @@ class Trie
             }
             currentElement = currentElement.NextElements[prefix[i]];
         }
-        return terminalElementCounter(currentElement);
-    }
-
-    private int terminalElementCounter(Element currentElement)
-    {
-        int result = currentElement.Terminal ? 1 : 0;
-        foreach (var i in currentElement.NextElements)
-        {
-            result += terminalElementCounter(currentElement.NextElements[i.Key]);
-        }
-        return result;
+        return currentElement.AmountOfPrefix;
     }
 }
