@@ -1,12 +1,12 @@
-﻿namespace Stack;
-
+﻿/// <summary>
+/// Interface for implement of stack
+/// </summary>
 public interface IStack
 {
     /// <summary>
-    /// Сhecks if stack is empty
+    /// True if stack is empty, else false
     /// </summary>
-    /// <returns>True is stack is empty, else returns false</returns>
-    bool IsEmpty();
+    bool IsEmpty { get; }
 
     /// <summary>
     /// Adds element to stack

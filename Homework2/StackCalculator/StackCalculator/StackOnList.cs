@@ -1,34 +1,40 @@
-﻿namespace Stack;
-
-using System.Collections.Generic;
-
+﻿/// <summary>
+/// Implementation of stack on list
+/// </summary>
 public class StackOnList : IStack
 {
-    public StackOnList()
+    private class Element
     {
-        this.stack = new List<double>();
+        public Element(double value, Element? next)
+        {
+            this.Value = value;
+            this.Next = next;
+        }
+
+        public double Value { get; set; }
+        public Element? Next;
     }
 
-    private List<double> stack;
-
-    public bool IsEmpty()
+    private Element? head;
+    
+    public bool IsEmpty
     {
-        return stack.Count == 0;
+        get { return head == null; }
     }
 
     public void Push(double value)
     {
-        stack.Add(value);
+        head = new Element(value, head);
     }
 
     public double? Pop()
     {
-        if (IsEmpty())
+        if (IsEmpty)
         {
             return null;
         }
-        var result = stack[stack.Count - 1];
-        stack.RemoveAt(stack.Count - 1);
+        var result = head!.Value;
+        head = head.Next;
         return result;
     }
 }

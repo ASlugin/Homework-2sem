@@ -1,16 +1,11 @@
 namespace StackCalculator.Tests;
 
 using NUnit.Framework;
-using Stack;
+using System;
 using System.Collections.Generic;
 
 public class StackTest
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     private static IEnumerable<TestCaseData> StackCases
         => new TestCaseData[]
         {
@@ -18,19 +13,19 @@ public class StackTest
             new TestCaseData(new StackOnList()),
         };
 
-
     [TestCaseSource(nameof(StackCases))]
     public void PushShallWork(IStack stack)
     {
         stack.Push(1);
-        Assert.IsFalse(stack.IsEmpty());
+        Assert.IsFalse(stack.IsEmpty);
     }
 
     [TestCaseSource(nameof(StackCases))]
+    [Obsolete]
     public void PopShallWorkCorrectly(IStack stack)
     {
         stack.Push(77.7);
-        Assert.AreEqual(77.7, stack.Pop());
+        Assert.AreEqual(77.7, stack.Pop(), 0.0001);
     }
 
     [TestCaseSource(nameof(StackCases))]
@@ -44,17 +39,18 @@ public class StackTest
     {
         stack.Push(-15);
         stack.Pop();
-        Assert.IsTrue(stack.IsEmpty());
+        Assert.IsTrue(stack.IsEmpty);
     }
 
     [TestCaseSource(nameof(StackCases))]
+    [Obsolete]
     public void LastInFirstOut(IStack stack)
     {
         stack.Push(-10);
         stack.Push(33);
         stack.Push(123.456);
-        Assert.AreEqual(stack.Pop(), 123.456);
-        Assert.AreEqual(stack.Pop(), 33);
-        Assert.AreEqual(stack.Pop(), -10);
+        Assert.AreEqual(123.456, stack.Pop(), 0.0001);
+        Assert.AreEqual(33, stack.Pop());
+        Assert.AreEqual(-10, stack.Pop());
     }
 }

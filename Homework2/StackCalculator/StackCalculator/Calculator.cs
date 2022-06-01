@@ -1,19 +1,14 @@
-﻿namespace StackCalculator;
-
-using Stack;
-
+﻿/// <summary>
+/// Class for calculate expression in reverse Polish notation
+/// </summary>
 public class Calculator
 {
     private static bool IsOperation(string element)
-    {
-        return element.Length == 1 && (element[0] == '+' || element[0] == '-' || element[0] == '*' || element[0] == '/');
-    }
+        => element.Length == 1 && (element[0] == '+' || element[0] == '-' || element[0] == '*' || element[0] == '/');
 
     /// <summary>
     /// Calculates expression in Reverse Polish notation
     /// </summary>
-    /// <param name="expression"></param>
-    /// <param name="stack"></param>
     /// <returns>Calculation result or null, if error has occurred</returns>
     public static double? Calculate(string expression, IStack stack)
     {
@@ -21,8 +16,7 @@ public class Calculator
         var expressionSplit = expression.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         foreach (string element in expressionSplit)
         {
-            int number;
-            if (int.TryParse(element, out number))
+            if (int.TryParse(element, out int number))
             {
                 stack.Push(number);
             }
@@ -61,7 +55,7 @@ public class Calculator
         }
 
         var result = stack.Pop();
-        if (result == null || !stack.IsEmpty())
+        if (result == null || !stack.IsEmpty)
         {
             return null;
         }

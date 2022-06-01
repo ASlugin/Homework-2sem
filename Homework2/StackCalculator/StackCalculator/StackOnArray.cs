@@ -1,5 +1,6 @@
-﻿namespace Stack;
-
+﻿/// <summary>
+/// Implementation of stack on array
+/// </summary>
 public class StackOnArray : IStack
 {
     public StackOnArray()
@@ -10,14 +11,15 @@ public class StackOnArray : IStack
     private double[] array;
     private int position = 0;
 
-    public bool IsEmpty()
+    public bool IsEmpty
     {
-        return position == 0;
+        get { return position == 0; }
     }
 
     public void Push(double value)
     {
-        array[position++] = value;
+        array[position] = value;
+        position++;
         if (position == array.Length)
         {
             Array.Resize(ref array, array.Length * 2);
@@ -26,12 +28,11 @@ public class StackOnArray : IStack
 
     public double? Pop()
     {
-        if (position == 0)
+        if (IsEmpty)
         {
             return null;
         }
         double result = array[--position];
-        array[position] = 0;
         return result;
     }
 }
