@@ -4,14 +4,8 @@ using NUnit.Framework;
 using System;
 using ParseTree;
 
-
 public class Tests
 {
-    [SetUp]
-    public void Setup()
-    {
-    }
-
     private double CreateTreeAndCalculateExpression(string expression)
     {
         Tree parseTree = new Tree(expression);
@@ -24,6 +18,7 @@ public class Tests
     [TestCase("/ 115 4", ExpectedResult = 28.75)]
     [TestCase("(* 4 (+ (/ 18 -3) (- (* (- 7 -3) 12) 50)))", ExpectedResult = 256)]
     [TestCase("+ (/ 13 (- 5 3) (/ (+ 1 1) (+ 4 1))", ExpectedResult = 6.9)]
+    [DefaultFloatingPointTolerance(0.01)]
     public double CorrectExpressions(string expression)
         => CreateTreeAndCalculateExpression(expression);
 

@@ -1,5 +1,6 @@
-﻿namespace ParseTree;
-
+﻿/// <summary>
+/// Interface for work with tree
+/// </summary>
 public interface INode
 {
     /// <summary>

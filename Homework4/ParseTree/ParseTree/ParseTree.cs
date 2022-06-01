@@ -1,8 +1,7 @@
-﻿namespace ParseTree;
-
-public class Tree 
+﻿public class Tree 
 {
     private INode root;
+
     public Tree(string expression)
     {
         var elements = expression.Split(new char[] {' ', '(', ')'}, StringSplitOptions.RemoveEmptyEntries);
@@ -20,8 +19,7 @@ public class Tree
             throw new ArgumentException("Incorrect expression: not enough arguments");
         }
 
-        int value = 0;
-        if (int.TryParse(elements[0], out value))
+        if (int.TryParse(elements[0], out int value))
         {
             return new Operand(value);
         }
@@ -56,8 +54,5 @@ public class Tree
     /// </summary>
     /// <returns>Result of calculating the expression</returns>
     public double Calculate()
-    {
-        return root.Calculate();
-    }
-
+        =>root.Calculate();
 }
