@@ -109,6 +109,6 @@ public static class BurrowsWheelerTransform
             inverseToResult += stringAndPositionForReverseBWT.Item1[positionSymbol];
             positionSymbol = positions[positionSymbol];
         }
-        return String.Concat(inverseToResult.ToCharArray().Reverse());
+        return new string(inverseToResult.Reverse().ToArray());
     }
 }
