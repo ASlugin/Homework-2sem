@@ -3,11 +3,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Class with implementation data structure Skip List
+/// </summary>
 public class SkipList<T> : IList<T> where T : IComparable<T>
 {
     public SkipList()
     {
-        bottomHead = new Node(default(T));
+        bottomHead = new Node(default);
         topHead = bottomHead;
         amountOfLevels = 1;
     }
@@ -15,7 +18,9 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
     private class Node
     {
         public T? Value { get; private set; }
+
         public Node? Next { get; set; }
+
         public Node? Down { get; set; }
 
         public Node(T? value)
@@ -24,8 +29,8 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         }
     }
 
-    private Node? topHead;
-    private Node? bottomHead;
+    private Node topHead;
+    private Node bottomHead;
     private int amountOfLevels;
 
     public int Count { get; private set; }
@@ -40,16 +45,16 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         }
 
         ++Count;
-        if (bottomHead!.Next == null)
+        if (bottomHead.Next == null)
         {
             bottomHead.Next = new Node(newValue);
             return;
         }
-        AddRecursive(topHead!, newValue);
+        AddRecursive(topHead, newValue);
 
         if (Count > Math.Pow(2, amountOfLevels))
         {
-            var newHead = new Node(default(T));
+            var newHead = new Node(default);
             newHead.Down = topHead;
             topHead = newHead;
             ++amountOfLevels;
@@ -93,7 +98,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
     public int IndexOf(T item)
     {
         int counter = 0;
-        Node? currentNode = bottomHead?.Next;
+        Node? currentNode = bottomHead.Next;
         while (currentNode != null)
         {
             if (currentNode.Value!.Equals(item))
@@ -135,7 +140,7 @@ public class SkipList<T> : IList<T> where T : IComparable<T>
         {
             throw new NotSupportedException();
         }
-        bottomHead = new Node(default(T));
+        bottomHead = new Node(default);
         topHead = bottomHead;
         amountOfLevels = 1;
         Count = 0;
