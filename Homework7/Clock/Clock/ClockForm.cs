@@ -10,8 +10,10 @@ public partial class ClockForm : Form
 {
     [DllImport("user32", CharSet = CharSet.Auto)]
     internal extern static bool PostMessage(IntPtr hWnd, uint Msg, uint WParam, uint LParam);
+
     [DllImport("user32", CharSet = CharSet.Auto)]
     internal extern static bool ReleaseCapture();
+
     public ClockForm()
     {
         InitializeComponent();
@@ -20,10 +22,15 @@ public partial class ClockForm : Form
         timer.Tick += new EventHandler(TimerTick);
     }
 
-    private int centerFormX = 175, centerFormY = 175;
-    private int secondHandLength = 100, minuteHandLength = 90, hourHandLength = 75;
+    private int centerFormX = 175;
+    private int centerFormY = 175;
 
-    private Timer timer = new Timer();
+    private int secondHandLength = 100;
+    private int minuteHandLength = 90;
+    private int hourHandLength = 75;
+
+    private Timer timer = new();
+
     private void OnClockMouseDown(object sender, MouseEventArgs e)
     {
         const uint WM_SYSCOMMAND = 0x0112;
@@ -51,6 +58,7 @@ public partial class ClockForm : Form
         coordination[1] = centerFormY - (int)(length * Math.Cos(Math.PI * val / 180));
         return coordination;
     }
+
     private int[] HourHandCoordination(int hval, int mval, int length)
     {
         var coordination = new int[2];
@@ -59,6 +67,7 @@ public partial class ClockForm : Form
         coordination[1] = centerFormY - (int)(length * Math.Cos(Math.PI * val / 180));
         return coordination;
     }
+
     private void TimerTick(object? sender, EventArgs e)
     {
         int second = DateTime.Now.Second;

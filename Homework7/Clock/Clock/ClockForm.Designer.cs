@@ -77,6 +77,7 @@
             this.Name = "ClockForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.ClockForm_Load);
+            this.Shown += new System.EventHandler(this.TimerTick);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
 
