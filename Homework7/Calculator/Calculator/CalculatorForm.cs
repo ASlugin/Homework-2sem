@@ -2,10 +2,12 @@
 
 public partial class CalculatorForm : Form
 {
-    private CalculatingClass calculating = new CalculatingClass();
+    private CalculatingClass calculating = new();
+
     private string textForErrorBox = "Error. Possible causes of the error:\n" +
         "1. Division by zero\n2. Negative number under the square root\n" +
         "3. Keyboard input is too fast";
+
     public CalculatorForm()
     {
         InitializeComponent();
@@ -55,6 +57,7 @@ public partial class CalculatorForm : Form
         {
             MessageBox.Show(textForErrorBox);
         }
+
         textBox.Focus();
         textBox.SelectionStart = textBox.TextLength;
     }
@@ -66,6 +69,7 @@ public partial class CalculatorForm : Form
         {
             MessageBox.Show(textForErrorBox);
         }
+
         textBox.Focus();
         textBox.SelectionStart = textBox.TextLength;
     }
@@ -77,6 +81,7 @@ public partial class CalculatorForm : Form
         {
             MessageBox.Show(textForErrorBox);
         }
+
         textBox.Focus();
         textBox.SelectionStart = textBox.TextLength;
     }
@@ -117,6 +122,7 @@ public partial class CalculatorForm : Form
                 MessageBox.Show(textForErrorBox);
             }
         }
+
         textBox.Focus();
         textBox.SelectionStart = textBox.TextLength;
     }

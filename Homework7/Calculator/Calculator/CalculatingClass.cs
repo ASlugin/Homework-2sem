@@ -13,19 +13,24 @@ public class CalculatingClass : INotifyPropertyChanged
     }
 
     private string textForTextBox;
+
     public string TextForTextBox
     {
-        get { return textForTextBox; }
+        get => textForTextBox;
         set
         {
             if (value == TextForTextBox)
+            {
                 return;
+            }
+
             textForTextBox = value;
             OnPropertyChanged("TextForTextBox");
         }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
     protected virtual void OnPropertyChanged(string propertyName)
     {
         if (PropertyChanged != null)
@@ -45,6 +50,7 @@ public class CalculatingClass : INotifyPropertyChanged
         Operation,
         SecondNumber
     }
+
     private State state;
     private bool dotIsAllowed = true;
     private int positionOfOperation = 0;
@@ -53,15 +59,188 @@ public class CalculatingClass : INotifyPropertyChanged
         => symbol == '+' || symbol == '-' || symbol == '*' || symbol == '/';
 
     private double Calculate()
-    {
-        switch (operation)
+        => operation switch
         {
-            case '+': return firstNumber + secondNumber;
-            case '-': return firstNumber - secondNumber;
-            case '*': return firstNumber * secondNumber;
-            case '/': return firstNumber / secondNumber;
-            default: return 0;
+            '+' => firstNumber + secondNumber,
+            '-' => firstNumber - secondNumber,
+            '*' => firstNumber * secondNumber,
+            '/' => firstNumber / secondNumber,
+            _ => 0
+        };
+
+    private bool ValidationOfIfLastSymbolIsEqual(string textForTextBoxWithoutLastSymbol, char prevLastSymbol)
+    {
+        if (state == State.FirstNumber)
+        {
+            TextForTextBox = textForTextBoxWithoutLastSymbol;
+            return true;
         }
+        else if (state == State.Operation)
+        {
+            TextForTextBox = textForTextBoxWithoutLastSymbol.Substring(0, textForTextBoxWithoutLastSymbol.Length - 1);
+            state = State.FirstNumber;
+            dotIsAllowed = false;
+            return true;
+        }
+        else if (state == State.SecondNumber)
+        {
+            if (prevLastSymbol == ',')
+            {
+                TextForTextBox = textForTextBoxWithoutLastSymbol;
+                return true;
+            }
+            if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || (operation == '/' && secondNumber == 0))
+            {
+                TextForTextBox = "";
+                state = State.Begin;
+                dotIsAllowed = true;
+                return false;
+            }
+            TextForTextBox = Calculate().ToString();
+            state = State.FirstNumber;
+            dotIsAllowed = false;
+            return true;
+        }
+        TextForTextBox = textForTextBoxWithoutLastSymbol;
+        return true;
+    }
+
+    private bool? ValidationIfStateIsFirstNumber(char prevLastSymbol, char lastSymbol)
+    {
+        if (prevLastSymbol == ',' && !Char.IsDigit(lastSymbol))
+        {
+            TextForTextBox = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
+            return true;
+        }
+        else if (Char.IsDigit(lastSymbol))
+        {
+            return true;
+        }
+        else if (lastSymbol == ',')
+        {
+            if (dotIsAllowed)
+            {
+                dotIsAllowed = false;
+                return true;
+            }
+            return null;
+        }
+        else if (IsOperation(lastSymbol))
+        {
+            if (!double.TryParse(TextForTextBox.Substring(0, TextForTextBox.Length - 1), out firstNumber))
+            {
+                TextForTextBox = "";
+                state = State.Begin;
+                dotIsAllowed = true;
+                return false;
+            }
+            operation = lastSymbol;
+            positionOfOperation = TextForTextBox.Length - 1;
+            state = State.Operation;
+            return true;
+        }
+        else if (lastSymbol == '²')
+        {
+            if (!double.TryParse(TextForTextBox.Substring(0, TextForTextBox.Length - 1), out firstNumber))
+            {
+                TextForTextBox = "";
+                state = State.Begin;
+                dotIsAllowed = true;
+                return false;
+            }
+            firstNumber *= firstNumber;
+            TextForTextBox = firstNumber.ToString();
+            dotIsAllowed = false;
+            return true;
+        }
+        else if (lastSymbol == '√')
+        {
+            if (!double.TryParse(TextForTextBox.Substring(0, TextForTextBox.Length - 1), out firstNumber) || firstNumber < 0)
+            {
+                TextForTextBox = "";
+                state = State.Begin;
+                dotIsAllowed = true;
+                return false;
+            }
+            firstNumber = Math.Sqrt(firstNumber);
+            TextForTextBox = firstNumber.ToString();
+            dotIsAllowed = false;
+            return true;
+        }
+        return null;
+    }
+
+    private bool? ValidationIfStateIsSecondNumber(char prevLastSymbol, char lastSymbol, string textForTextBoxWithoutLastSymbol)
+    {
+        if (prevLastSymbol == ',' && !Char.IsDigit(lastSymbol))
+        {
+            TextForTextBox = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
+            return true;
+        }
+        else if (Char.IsDigit(lastSymbol))
+        {
+            return true;
+        }
+        else if (lastSymbol == ',')
+        {
+            if (dotIsAllowed)
+            {
+                dotIsAllowed = false;
+                return true;
+            }
+            return null;
+        }
+        else if (IsOperation(lastSymbol))
+        {
+            if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || (operation == '/' && secondNumber == 0))
+            {
+                TextForTextBox = "";
+                state = State.Begin;
+                dotIsAllowed = true;
+                return false;
+            }
+            var result = Calculate();
+            TextForTextBox = result.ToString() + lastSymbol;
+            firstNumber = result;
+            operation = lastSymbol;
+            positionOfOperation = TextForTextBox.Length - 1;
+            state = State.Operation;
+            dotIsAllowed = true;
+            return true;
+        }
+        else if (lastSymbol == '²')
+        {
+            if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || operation == '/' && secondNumber == 0)
+            {
+                TextForTextBox = "";
+                state = State.Begin;
+                dotIsAllowed = true;
+                return false;
+            }
+            var result = Math.Pow(Calculate(), 2);
+            TextForTextBox = result.ToString();
+            state = State.FirstNumber;
+            dotIsAllowed = false;
+            return true;
+        }
+        else if (lastSymbol == '√')
+        {
+            double result;
+            if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber)
+                || (result = Calculate()) < 0 || operation == '/' && secondNumber == 0)
+            {
+                TextForTextBox = "";
+                state = State.Begin;
+                dotIsAllowed = true;
+                return false;
+            }
+            result = Math.Sqrt(result);
+            TextForTextBox = result.ToString();
+            state = State.FirstNumber;
+            dotIsAllowed = false;
+            return true;
+        }
+        return null;
     }
 
     /// <summary>
@@ -81,43 +260,9 @@ public class CalculatingClass : INotifyPropertyChanged
         char prevLastSymbol = TextForTextBox.Length < 2 ? '\0' : TextForTextBox[TextForTextBox.Length - 2];
         string textForTextBoxWithoutLastSymbol = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
 
-        
-
         if (lastSymbol == '=')
         {
-            if (state == State.FirstNumber)
-            {
-                TextForTextBox = textForTextBoxWithoutLastSymbol;
-                return true;
-            }
-            else if (state == State.Operation)
-            {
-                TextForTextBox = textForTextBoxWithoutLastSymbol.Substring(0, textForTextBoxWithoutLastSymbol.Length - 1);
-                state = State.FirstNumber;
-                dotIsAllowed = false;
-                return true;
-            }
-            else if (state == State.SecondNumber)
-            {
-                if (prevLastSymbol == ',')
-                {
-                    TextForTextBox = textForTextBoxWithoutLastSymbol;
-                    return true;
-                }
-                if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || (operation == '/' && secondNumber == 0))
-                {
-                    TextForTextBox = "";
-                    state = State.Begin;
-                    dotIsAllowed = true;
-                    return false;
-                }
-                TextForTextBox = Calculate().ToString();
-                state = State.FirstNumber;
-                dotIsAllowed = false;
-                return true;
-            }
-            TextForTextBox = textForTextBoxWithoutLastSymbol;
-            return true;
+            return ValidationOfIfLastSymbolIsEqual(textForTextBoxWithoutLastSymbol, prevLastSymbol);
         }
 
         if (state == State.Begin)
@@ -130,64 +275,10 @@ public class CalculatingClass : INotifyPropertyChanged
         }
         else if (state == State.FirstNumber)
         {
-            if (prevLastSymbol == ',' && !Char.IsDigit(lastSymbol))
+            var result = ValidationIfStateIsFirstNumber(prevLastSymbol, lastSymbol);
+            if (result != null)
             {
-                TextForTextBox = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
-                return true;
-            }
-            else if (Char.IsDigit(lastSymbol))
-            {
-                return true;
-            }
-            else if (lastSymbol == ',')
-            {
-                if (dotIsAllowed)
-                {
-                    dotIsAllowed = false;
-                    return true;
-                }
-            }
-            else if (IsOperation(lastSymbol))
-            {
-                if (!double.TryParse(TextForTextBox.Substring(0, TextForTextBox.Length - 1), out firstNumber))
-                {
-                    TextForTextBox = "";
-                    state = State.Begin;
-                    dotIsAllowed = true;
-                    return false;
-                }
-                operation = lastSymbol;
-                positionOfOperation = TextForTextBox.Length - 1;
-                state = State.Operation;
-                return true;
-            }
-            else if (lastSymbol == '²')
-            {
-                if (!double.TryParse(TextForTextBox.Substring(0, TextForTextBox.Length - 1), out firstNumber))
-                {
-                    TextForTextBox = "";
-                    state = State.Begin;
-                    dotIsAllowed = true;
-                    return false;
-                }
-                firstNumber *= firstNumber;
-                TextForTextBox = firstNumber.ToString();
-                dotIsAllowed = false;
-                return true;
-            }
-            else if (lastSymbol == '√')
-            {
-                if (!double.TryParse(TextForTextBox.Substring(0, TextForTextBox.Length - 1), out firstNumber) || firstNumber < 0)
-                {
-                    TextForTextBox = "";
-                    state = State.Begin;
-                    dotIsAllowed = true;
-                    return false;
-                }
-                firstNumber = Math.Sqrt(firstNumber);
-                TextForTextBox = firstNumber.ToString();
-                dotIsAllowed = false;
-                return true;
+                return (bool)result;
             }
         }
         else if (state == State.Operation)
@@ -201,72 +292,10 @@ public class CalculatingClass : INotifyPropertyChanged
         }
         else if (state == State.SecondNumber)
         {
-            if (prevLastSymbol == ',' && !Char.IsDigit(lastSymbol))
+            var result = ValidationIfStateIsSecondNumber(prevLastSymbol, lastSymbol, textForTextBoxWithoutLastSymbol);
+            if (result != null)
             {
-                TextForTextBox = TextForTextBox.Substring(0, TextForTextBox.Length - 1);
-                return true;
-            }
-            else if (Char.IsDigit(lastSymbol))
-            {
-                return true;
-            }
-            else if (lastSymbol == ',')
-            {
-                if (dotIsAllowed)
-                {
-                    dotIsAllowed = false;
-                    return true;
-                }
-            }
-            else if (IsOperation(lastSymbol))
-            {
-                if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || (operation == '/' && secondNumber == 0))
-                {
-                    TextForTextBox = "";
-                    state = State.Begin;
-                    dotIsAllowed = true;
-                    return false;
-                }
-                var result = Calculate();
-                TextForTextBox = result.ToString() + lastSymbol;
-                firstNumber = result;
-                operation = lastSymbol;
-                positionOfOperation = TextForTextBox.Length - 1;
-                state = State.Operation;
-                dotIsAllowed = true;
-                return true;
-            }
-            else if (lastSymbol == '²')
-            {
-                if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) || operation == '/' && secondNumber == 0)
-                {
-                    TextForTextBox = "";
-                    state = State.Begin;
-                    dotIsAllowed = true;
-                    return false;
-                }
-                var result = Math.Pow(Calculate(), 2);
-                TextForTextBox = result.ToString();
-                state = State.FirstNumber;
-                dotIsAllowed = false;
-                return true;
-            }
-            else if (lastSymbol == '√')
-            {
-                double result;
-                if (!double.TryParse(textForTextBoxWithoutLastSymbol.Substring(positionOfOperation + 1), out secondNumber) 
-                    || (result = Calculate()) < 0 || operation == '/' && secondNumber == 0)
-                {
-                    TextForTextBox = "";
-                    state = State.Begin;
-                    dotIsAllowed = true;
-                    return false;
-                }
-                result = Math.Sqrt(result);
-                TextForTextBox = result.ToString();
-                state = State.FirstNumber;
-                dotIsAllowed = false;
-                return true;
+                return (bool)result;
             }
         }
         TextForTextBox = textForTextBoxWithoutLastSymbol;
@@ -298,5 +327,4 @@ public class CalculatingClass : INotifyPropertyChanged
         }
         return true;
     }
-
 }
