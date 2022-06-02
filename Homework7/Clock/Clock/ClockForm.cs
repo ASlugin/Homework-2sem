@@ -17,9 +17,10 @@ public partial class ClockForm : Form
     public ClockForm()
     {
         InitializeComponent();
-        this.BackColor = Color.AliceBlue;
-        this.TransparencyKey = this.BackColor;
+        this.BackColor = Color.White;
         timer.Tick += new EventHandler(TimerTick);
+
+        graphics = this.CreateGraphics();
     }
 
     private int centerFormX = 175;
@@ -29,8 +30,7 @@ public partial class ClockForm : Form
     private int minuteHandLength = 90;
     private int hourHandLength = 75;
 
-    private Timer timer = new();
-
+    Graphics graphics;
     private void OnClockMouseDown(object sender, MouseEventArgs e)
     {
         const uint WM_SYSCOMMAND = 0x0112;
@@ -75,7 +75,6 @@ public partial class ClockForm : Form
         int hour = DateTime.Now.Hour;
 
         var handCoordination = new int[2];
-        Graphics graphics = pictureBox.CreateGraphics();
 
         // Erasing previous hands
         handCoordination = MinuteOrSecondHandCoordination(second - 1, secondHandLength + 4);
@@ -84,6 +83,23 @@ public partial class ClockForm : Form
         graphics.DrawLine(new Pen(Color.White, 50f), new Point(centerFormX, centerFormY), new Point(handCoordination[0], handCoordination[1]));
         handCoordination = HourHandCoordination(hour % 12, minute, hourHandLength + 4);
         graphics.DrawLine(new Pen(Color.White, 50f), new Point(centerFormX, centerFormY), new Point(handCoordination[0], handCoordination[1]));
+
+        // Draw new hands
+        handCoordination = HourHandCoordination(hour % 12, minute, hourHandLength);
+        graphics.DrawLine(new Pen(Color.Gray, 4f), new Point(centerFormX, centerFormY), new Point(handCoordination[0], handCoordination[1]));
+        handCoordination = MinuteOrSecondHandCoordination(minute, minuteHandLength);
+        graphics.DrawLine(new Pen(Color.Black, 3f), new Point(centerFormX, centerFormY), new Point(handCoordination[0], handCoordination[1]));
+        handCoordination = MinuteOrSecondHandCoordination(second, secondHandLength);
+        graphics.DrawLine(new Pen(Color.DarkOrange, 2f), new Point(centerFormX, centerFormY), new Point(handCoordination[0], handCoordination[1]));
+    }
+
+    private void pictureBox_Paint(object sender, PaintEventArgs e)
+    {
+        int second = DateTime.Now.Second;
+        int minute = DateTime.Now.Minute;
+        int hour = DateTime.Now.Hour;
+
+        var handCoordination = new int[2];
 
         // Draw new hands
         handCoordination = HourHandCoordination(hour % 12, minute, hourHandLength);
