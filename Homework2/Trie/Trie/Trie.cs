@@ -36,6 +36,11 @@ class Trie
     /// <returns>True if there has not been such a string yet</returns>
     public bool Add(string element)
     {
+        if (Contains(element))
+        {
+            return false;
+        }
+
         var currentElement = root;
         for (var i = 0; i < element.Length; i++)
         {
@@ -145,7 +150,6 @@ class Trie
     /// <summary>
     /// Counts how many words starts with a given prefix
     /// </summary>
-    /// <param name="prefix"></param>
     /// <returns>Amount word which starts with given prefix</returns>
     public int HowManyStartsWithPrefix(string prefix)
     {
