@@ -26,7 +26,7 @@ public class UniqueList : List
     /// <exception cref="Exception"></exception>
     public override void ChangeValueOfElement(int newValue, int position)
     {
-        if (Exist(newValue))
+        if (Exist(newValue) || GetPositionOfFirstElementByValue(newValue) != position)
         {
             throw new AttemptToAddExistingValueException("The given value already exist in the list");
         }
