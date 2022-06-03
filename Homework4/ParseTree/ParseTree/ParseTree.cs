@@ -1,4 +1,7 @@
-﻿public class Tree 
+﻿/// <summary>
+/// Class for parse tree
+/// </summary>
+public class Tree 
 {
     private INode root;
 
