@@ -49,5 +49,4 @@ public class GameTest
         game.OnDown(this, EventArgs.Empty);
         Assert.AreEqual((initPosition.Item1 - 1, initPosition.Item2 + 1), game.GetPosition());
     }
-
 }
