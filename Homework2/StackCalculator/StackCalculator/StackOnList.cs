@@ -17,10 +17,7 @@ public class StackOnList : IStack
 
     private Element? head;
     
-    public bool IsEmpty
-    {
-        get { return head == null; }
-    }
+    public bool IsEmpty => head == null;
 
     public void Push(double value)
     {
